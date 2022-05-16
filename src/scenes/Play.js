@@ -10,7 +10,7 @@ class Play extends Phaser.Scene {
         // load images/tile sprites
         this.load.image('rocket', './assets/lettuce.png');
         this.load.image('spike', './assets/coral.png'); 
-        this.load.image('turtle', './assets/turtle.png');
+        this.load.image('turtle', './assets/cat1.png');
         this.load.image('starfield', './assets/starfield.png');
         // this.load.image('platform', './assets/floor.png');
         this.load.image('hungerBar', './assets/hungerbarempty.png');
@@ -59,49 +59,16 @@ class Play extends Phaser.Scene {
 
 
         //spaceships
-        this.player = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5).setOrigin(0.5, 0.5);
-        this.player.setScale(0.1);
-        this.anims.create({ 
-            key: 'walk', 
-            frames: this.anims.generateFrameNames('haroldanims', {      
-                prefix: 'turtle_walk_',
-                start: 1,
-                end: 2,
-                suffix: '',
-                zeroPad: 0 
-            }), 
-            frameRate: 15,
-            repeat: -1 
-        });
-        this.anims.create({
-            key: 'death',
-            defaultTextureKey: 'haroldanims',
-            frames: [
-                { frame: 'turtle_dead' }
-            ],
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'slide',
-            defaultTextureKey: 'haroldanims',
-            frames: [
-                { frame: 'turtle_slide' }
-            ],
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'hurt',
-            defaultTextureKey: 'haroldanims',
-            frames: [
-                { frame: 'turtle_hit' }
-            ],
-            repeat: -1
-        });
+        this.player = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5);
+        this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5);
+        this.player.setScale(1);
+        this.player2.setScale(1);
+        
         
 
 
         this.physics.add.collider(this.player, this.floor);
-
+        this.physics.add.collider(this.player2, this.floor);
 
 
 
@@ -111,9 +78,16 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
+        keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+        keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
 
 
 
@@ -183,16 +157,15 @@ class Play extends Phaser.Scene {
         this.distanceText.text = 0;
 
         // adding a platform to the game, the arguments are platform width and x position
-        this.addPlatform(game.config.width / 5, game.config.width / 1.5);
         // setting collisions between the player and the platform group
         this.physics.add.collider(this.player, this.platformGroup, function (_player, _platform) {
             if (_player.body.touching.right && _platform.body.touching.left) {
 
                 this.speed = 0;
-            this.updatePlatformSpeeds();
+
             this.isTouchingObstacle = true;
                 //this.setSpeedZero();
-                //this.updatePlatformSpeeds();
+
 
             }
         },null,this);
@@ -201,12 +174,11 @@ class Play extends Phaser.Scene {
             if (_player.body.touching.right && _platform.body.touching.left) {
 
                 this.speed = 0;
-            this.updatePlatformSpeeds();
+
             this.isTouchingObstacle = true;
 
                 
                 //this.setSpeedZero();
-                //this.updatePlatformSpeeds();
 
             }
         },null,this);
@@ -239,9 +211,9 @@ class Play extends Phaser.Scene {
                 this.speedUpgrade = 0;
                 this.eatUpgrade = 0;
                 this.sound.play('hurt');
-                this.player.anims.play('hurt', true);
+                // this.player.anims.play('hurt', true);
                 this.clock = this.time.delayedCall(1500, () => {
-                    this.player.anims.play('walk', true);
+                    // this.player.anims.play('walk', true);
                 }, null, this);
             }
 
@@ -253,12 +225,12 @@ class Play extends Phaser.Scene {
 
         },null,this);
 
-        this.updatePlatformSpeeds();
+
 
 
         // this.player.anims.play('death', true);
         // console.log('anims', this.anims.anims.entries);
-        this.player.anims.play('walk', true);
+        // this.player.anims.play('walk', true);
 
     }
 
@@ -270,105 +242,7 @@ class Play extends Phaser.Scene {
     }
 
 
-    // the core of the script: platform are added from the pool or created on the fly
-    addPlatform(platformWidth, posX) {
-        let platform;
-        if (this.platformPool.getLength()) {
-            platform = this.platformPool.getFirst();
-            platform.x = posX;
-            //spawn platform at random y point (fix later)
-            // platform.y = Phaser.Math.Between(game.config.height - 150, 200);
-            platform.y = Phaser.Math.RoundTo(Phaser.Math.Between(game.config.height - 150, 400),0,30);
-            platform.active = true;
-            platform.visible = true;
-            this.platformPool.remove(platform);
-        }
-        else {
-            platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform").setOrigin(0,0.5);
-            
-            this.physics.add.collider(this.player, this.platform);
-            // platform.setImmovable(true);
-            this.platformGroup.add(platform);
-
-
-        }
-        platform.displayWidth = platformWidth;
-        
-        platform.setOrigin(0,0.5);
-        
-        var d = Phaser.Math.Between(1, 8);
-        if(d == 1){
-            for(let i = 0; i < platformWidth - 25; i += 50){
-                this.spike = this.physics.add.sprite((posX + i + 25), platform.y - 35, "spike").setOrigin(0.5,0.5).setScale(0.5);
     
-                this.physics.add.overlap(this.player, this.spike);
-                // platform.setImmovable(true);
-                this.spikes.add(this.spike);
-                
-            }
-        }
-        else if(d < 8){
-            for(let i = 0; i < platformWidth - 25; i += 50){
-                this.coin = this.physics.add.sprite((posX + i + 25), platform.y - 40, "rocket").setOrigin(0.5,0.5).setScale(0.6);
-    
-                this.physics.add.overlap(this.player, this.coin);
-                // platform.setImmovable(true);
-                this.coins.add(this.coin);
-                
-            }
-        }
-
-        
-        platform.displayHeight = 30;
-
-        this.nextPlatformDistance = Phaser.Math.Between(game.settings.spawnRange[0], game.settings.spawnRange[1]);
-    }
-
-    updatePlatformSpeeds() {
-        this.coins.getChildren().forEach(function (coin) {
-            coin.setVelocityX(this.speed * -1);
-            if(coin.x <= 0 - coin.width){
-                coin.destroy();
-            }
-
-        }, this);
-
-        this.spikes.getChildren().forEach(function (spike) {
-            spike.setVelocityX(this.speed * -1);
-            if(spike.x <= 0 - spike.width){
-                spike.destroy();
-            }
-        }, this);
-        
-        this.platformPool.getChildren().forEach(function (platform) {
-            platform.setVelocityX(this.speed * -1);
-        }, this);
-
-        this.platformGroup.getChildren().forEach(function (platform) {
-            platform.setVelocityX(this.speed * -1);
-
-        }, this);
-
-        
-
-
-    }
-
-    preventPlatformInches() {
-        this.platformPool.getChildren().forEach(function (platform) {
-            platform.x += 3;
-        }, this);
-
-        this.platformGroup.getChildren().forEach(function (platform) {
-            platform.x += 3;
-
-        }, this);
-
-        this.floor.tilePositionX -= 1;
-        this.groundVisual.tilePositionX -= 1;
-        this.backdrop.tilePositionX -= 1;
-        this.player.x -= 1;
-    }
 
 
 
@@ -379,21 +253,19 @@ class Play extends Phaser.Scene {
 
 
         if(!this.gameOver){
-            this.hunger -= this.hungerDrain;
+
             if(this.invincibleframes > 0){
                 this.invincibleframes--;
             }
             else{
                 if(keyDOWN.isDown){
-                    this.player.anims.play('slide', true);
+                    // this.player.anims.play('slide', true);
                 }
                 else{
-                    this.player.anims.play('walk', true);
+                    // this.player.anims.play('walk', true);
                 }
             }
-            this.hungerFill.scaleX = 128 * ((this.hunger/game.settings.maxHunger));
-            this.distanceTravelled += this.speed;
-            this.distanceText.text = "Distance Travelled - " + Math.round(this.distanceTravelled/1000,0);
+
             
         }
 
@@ -462,7 +334,7 @@ class Play extends Phaser.Scene {
             this.speed = 0;
             this.player.setGravityY(0);
             this.player.setVelocityY(0);
-            this.player.anims.play('death', true);
+            // this.player.anims.play('death', true);
             let scoreConfig = {
                 fontFamily: 'Noto Sans',
             fontSize: '28px',
@@ -487,31 +359,9 @@ class Play extends Phaser.Scene {
             }
         }
 
+
+
         
-
-
-        if (this.player.body.touching.right == true || this.player.body.embedded == true) {
-            // this.speed = 0;
-            // this.updatePlatformSpeeds();
-            // this.isTouchingObstacle = true;
-            // //this.preventPlatformInches();
-            this.updatePlatformSpeeds();
-        }
-        else {
-
-            if (this.speed < this.speedlimit && !this.isTouchingObstacle) {
-                this.speed += this.accel;
-
-            }
-
-            this.isTouchingObstacle = false;
-
-            this.updatePlatformSpeeds();
-            
-            this.floor.tilePositionX += this.speed / 70;
-            this.groundVisual.tilePositionX += this.speed /70;
-            this.backdrop.tilePositionX += this.speed /240;
-        }
 
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.backgroundMusic.stop();
@@ -524,31 +374,10 @@ class Play extends Phaser.Scene {
 
         if (!this.gameOver) {
             this.player.update();
+            this.player2.update();
         }
 
-        // recycling platforms
-        let minDistance = game.config.width;
-        this.platformGroup.getChildren().forEach(function (platform) {
-
-            let platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
-            minDistance = Math.min(minDistance, platformDistance);
-            platform.setVelocityY(0);
-            platform.setPushable(false);
-            if (platform.x < - platform.displayWidth / 2) {
-                this.platformGroup.killAndHide(platform);
-                this.platformGroup.remove(platform);
-            }
-        }, this);
-
-        // adding new platforms
-        if (minDistance > this.nextPlatformDistance) {
-            // var nextPlatformWidth = Phaser.Math.Between(game.settings.platformSizeRange[0], game.settings.platformSizeRange[1]);
-            var nextPlatformWidth = Math.round((Phaser.Math.Between(game.settings.platformSizeRange[0], game.settings.platformSizeRange[1]))/50)*50;
-            //console.log(nextPlatformWidth);
-            this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
-        }
-        // check collisions
-
+        
 
     }
 
