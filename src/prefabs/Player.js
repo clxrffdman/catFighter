@@ -19,7 +19,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isSlide = false;
         this.jumpAmount = 0;
         this.jumpVelocity = 425;
-        this.setBodySize(600,300,false);
+        //this.setBodySize(600,300,false);
         this.isPlayerOneS = isPlayerOne;
         this.isFacingRight = true;
         
@@ -106,6 +106,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.jumpHeld = false;
                 
             }
+
+            if(keyS.isDown && !this.isSlide){
+                this.isSlide = true;
+                this.body.setGravityY(3400);
+                this.setBodySize(100,50,false);
+            }
+            if(this.isSlide && !keyS.isDown){
+                this.isSlide = false;
+                this.body.setGravityY(1200);
+                this.setBodySize(100,100,false);
+                this.y -= 50;
+            }
         }
         else{
             if(keyJ.isDown){
@@ -139,21 +151,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.jumpHeld = false;
                 
             }
+
+            if(keyK.isDown && !this.isSlide){
+                this.isSlide = true;
+                this.body.setGravityY(3400);
+                this.setBodySize(100,50,false);
+            }
+            if(this.isSlide && !keyK.isDown){
+                this.isSlide = false;
+                this.body.setGravityY(1200);
+                this.setBodySize(100,100,false);
+                this.y -= 50;
+            }
         }
 
         
 
-        // if(keyS.isDown && !this.isSlide){
-        //     this.isSlide = true;
-        //     this.body.setGravityY(3400);
-        //     this.setBodySize(600,250,false);
-        // }
-        // if(this.isSlide && !keyDOWN.isDown){
-        //     this.isSlide = false;
-        //     this.body.setGravityY(1200);
-        //     this.setBodySize(600,300,false);
-        //     this.y -= 15;
-        // }
+        
 
 
     }

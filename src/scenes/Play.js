@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         this.load.image('sand', './assets/floor_1.png');
         this.load.image('ground', './assets/floor_2.png');
         this.load.image('backdrop', './assets/backdrop.png');
+        this.load.image('upgradeIcon1', './assets/upgradeIcon.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.audio('backgroundtrack', './assets/testsong.wav');
@@ -106,11 +107,9 @@ class Play extends Phaser.Scene {
             }
         });
 
-        this.coins = this.add.group();
-        this.coins.enableBody = true;
+        this.upgrades = this.add.group();
+        this.upgrades.enableBody = true;
 
-        this.spikes = this.add.group();
-        this.spikes.enableBody = true;
 
 
         let scoreConfig = {
@@ -127,10 +126,17 @@ class Play extends Phaser.Scene {
         }
         scoreConfig.fixedWidth = 0;
 
-        this.hungerFill = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "hungerFill").setOrigin(0,0.5).setDepth(2);
-        this.hungerBar = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "hungerBar").setOrigin(0,0.5).setDepth(2);
-        this.hungerText = this.add.text((game.config.width - borderPadding * 15) - 60, borderUISize + borderPadding * 2, "Hunger:", scoreConfig).setOrigin(0.5,0.5).setDepth(2);
+     
+        this.player1Upgrade1UI = this.add.image( borderPadding * 15, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
+        this.player2Upgrade1UI = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
         
+
+        this.player1Upgrade1UI.visible = false;
+        this.player2Upgrade1UI.visible = false;
+
+        this.upgrade1 = new UpgradeCollectable(this, game.config.width / 4 * 3, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon1', Phaser.AUTO, 5);
+        this.upgrades.add(this.upgrade1);
+
         // pool
         this.platformPool = this.add.group({
 
@@ -143,8 +149,6 @@ class Play extends Phaser.Scene {
 
 
 
-        // number of consecutive jumps made by the player
-        this.playerJumps = 0;
         this.speed = 350;
         this.accel = 2.4;
         this.hungerDrain = 1;
@@ -153,8 +157,6 @@ class Play extends Phaser.Scene {
         this.hunger = 1000;
 
 
-        this.distanceText = this.add.text((borderPadding * 15)-80, borderUISize + borderPadding * 2, this.currentTime / 1000, scoreConfig).setOrigin(0,0.5).setDepth(2);
-        this.distanceText.text = 0;
 
         // adding a platform to the game, the arguments are platform width and x position
         // setting collisions between the player and the platform group
@@ -183,47 +185,20 @@ class Play extends Phaser.Scene {
             }
         },null,this);
 
-        this.physics.add.overlap(this.player, this.coins, function (player, coin) {
+        this.physics.add.overlap(this.player, this.upgrades, function (player, coin) {
 
-
-            this.hunger += 50;
-            this.sound.play('lettuce');
-            if(this.hunger > game.settings.maxHunger){
-                this.hunger = game.settings.maxHunger;
-            }
-            //console.log(this.hunger);
-            
+            this.player1Upgrade1UI.visible = true;
             coin.destroy();
 
+        },null,this);
 
+        this.physics.add.overlap(this.player2, this.upgrades, function (player, coin) {
 
-
+            this.player2Upgrade1UI.visible = true;
+            coin.destroy();
 
         },null,this);
 
-        this.physics.add.overlap(this.player, this.spikes, function (player, spike) {
-
-
-            if(this.invincibleframes <= 0){
-                this.hunger -= 80;
-                this.invincibleframes = 120;
-                this.setSpeedZero();
-                this.speedUpgrade = 0;
-                this.eatUpgrade = 0;
-                this.sound.play('hurt');
-                // this.player.anims.play('hurt', true);
-                this.clock = this.time.delayedCall(1500, () => {
-                    // this.player.anims.play('walk', true);
-                }, null, this);
-            }
-
-            
-
-
-
-
-
-        },null,this);
 
 
 

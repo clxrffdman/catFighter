@@ -19,7 +19,7 @@ let config = {
             debug: false,
             gravity: { y: 0 },
             tileBias: 32,
-            //debug: true
+            debug: true
         }
     },
     fps: {
