@@ -23,6 +23,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isPlayerOneS = isPlayerOne;
         this.isFacingRight = true;
         
+        this.isPunching = false;
         
     }
 
@@ -51,6 +52,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumpVelocity = arg;
     }
 
+    doPunch(){
+        this.isPunching = true;
+        if(this.isFacingRight){
+            this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, 5, true);
+        }
+        else{
+            this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, 5, true);
+            this.punch.flipX = true;
+            
+        }
+
+        this.timedEvent = this.scene.time.delayedCall(500, this.stopPunching, [], this);
+    }
+    
+    stopPunching(){
+        this.isPunching = false;
+    }
 
     update(){
 
@@ -75,6 +93,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         if(this.isPlayerOneS){
+
+            if(keyE.isDown && !this.isPunching){
+                this.doPunch();
+                
+                
+            }
+
+            
             if(keyA.isDown){
                 this.setVelocityX(-500);
                 this.isFacingRight = false;

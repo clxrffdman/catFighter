@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/lettuce.png');
         this.load.image('spike', './assets/coral.png'); 
         this.load.image('turtle', './assets/cat1.png');
+        this.load.image('punch', './assets/punchHitbox.png');
         this.load.image('starfield', './assets/starfield.png');
         // this.load.image('platform', './assets/floor.png');
         this.load.image('hungerBar', './assets/hungerbarempty.png');
@@ -65,8 +66,10 @@ class Play extends Phaser.Scene {
         this.player.setScale(1);
         this.player2.setScale(1);
         
+        this.player1Health = 5;
+        this.player2Health = 5;
         
-
+        
 
         this.physics.add.collider(this.player, this.floor);
         this.physics.add.collider(this.player2, this.floor);
@@ -80,10 +83,16 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         
+        //Player 1 Controls
+
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+
+        keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+        //Player 2 Controls
 
         keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
         keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
@@ -110,6 +119,9 @@ class Play extends Phaser.Scene {
         this.upgrades = this.add.group();
         this.upgrades.enableBody = true;
 
+
+        this.hitboxes = this.add.group();
+        this.hitboxes.enableBody = true;
 
 
         let scoreConfig = {
@@ -244,60 +256,9 @@ class Play extends Phaser.Scene {
             
         }
 
-        if(this.growth == 0 && this.distanceTravelled/1000 > 2000){
-            this.sound.play('grow');
-            this.growth = 1;
-            this.accel = 4;
-            this.hungerDrain = 1.3;
-            this.player.setScale(0.12);
-            this.player.x += 5;
-            this.player.modifyJumpHeight(550);
-            this.speedlimit = 1050;
-        }
+        //Abilities Controls
 
-        if(this.growth == 1 && this.distanceTravelled/1000 > 4000){
-            this.sound.play('grow');
-            this.growth = 2;
-            this.accel = 5;
-            this.hungerDrain = 1.5;
-            this.player.setScale(0.14);
-            this.player.x += 5;
-            this.player.modifyJumpHeight(575);
-            this.speedlimit = 1100;
-        }
-
-        if(this.growth == 2 && this.distanceTravelled/1000 > 6000){
-            this.sound.play('grow');
-            this.growth = 3;
-            this.accel = 5.5;
-            this.hungerDrain = 1.8;
-            this.player.setScale(0.16);
-            this.player.x += 6;
-            this.player.modifyJumpHeight(585);
-            this.speedlimit = 1150;
-        }
-
-        if(this.growth == 3 && this.distanceTravelled/1000 > 8000){
-            this.sound.play('grow');
-            this.growth = 4;
-            this.accel = 5.75;
-            this.hungerDrain = 1.85;
-            this.player.setScale(0.18);
-            this.player.x += 6;
-            this.player.modifyJumpHeight(590);
-            this.speedlimit = 1200;
-        }
-
-        if(this.growth == 4 && this.distanceTravelled/1000 > 10000){
-            this.sound.play('grow');
-            this.growth = 5;
-            this.accel = 6;
-            this.hungerDrain = 1.9;
-            this.player.setScale(0.2);
-            this.player.x += 6;
-            this.player.modifyJumpHeight(595);
-            this.speedlimit = 1250;
-        }
+        
 
         if(!this.gameOver && this.hunger <= 0){
             this.gameOver = true;

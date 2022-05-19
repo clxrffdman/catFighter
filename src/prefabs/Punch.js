@@ -1,4 +1,4 @@
-class Player extends Phaser.Physics.Arcade.Sprite {
+class Punch extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame, baseJump, isPlayerOne) {
         super(scene, x, y, texture, frame);
         
@@ -7,11 +7,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setOffset(1,1);
         this.scene = scene;
 
-        this.time.events.add(5000, this.destroy, this);
-        
+        this.timedEvent = this.scene.time.delayedCall(500, this.killPunch, [], this);
         
     }
-
+    
+    killPunch(){
+        this.destroy();
+    }
 
 
     update(){
