@@ -65,9 +65,11 @@ class Play extends Phaser.Scene {
         this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5);
         this.player.setScale(1);
         this.player2.setScale(1);
+
+        this.player1_hasUpgrade1 = false;
+        this.player2_hasUpgrade1 = false;
         
-        this.player1Health = 5;
-        this.player2Health = 5;
+
         
         
 
@@ -116,6 +118,8 @@ class Play extends Phaser.Scene {
             }
         });
 
+
+
         this.upgrades = this.add.group();
         this.upgrades.enableBody = true;
 
@@ -160,45 +164,9 @@ class Play extends Phaser.Scene {
 
 
 
-
-        this.speed = 350;
-        this.accel = 2.4;
-        this.hungerDrain = 1;
-        this.isTouchingObstacle = false;
-        this.distanceTravelled = 0;
-        this.hunger = 1000;
-
-
-
-        // adding a platform to the game, the arguments are platform width and x position
-        // setting collisions between the player and the platform group
-        this.physics.add.collider(this.player, this.platformGroup, function (_player, _platform) {
-            if (_player.body.touching.right && _platform.body.touching.left) {
-
-                this.speed = 0;
-
-            this.isTouchingObstacle = true;
-                //this.setSpeedZero();
-
-
-            }
-        },null,this);
-
-        this.physics.add.overlap(this.player, this.platformGroup, function (_player, _platform) {
-            if (_player.body.touching.right && _platform.body.touching.left) {
-
-                this.speed = 0;
-
-            this.isTouchingObstacle = true;
-
-                
-                //this.setSpeedZero();
-
-            }
-        },null,this);
-
         this.physics.add.overlap(this.player, this.upgrades, function (player, coin) {
 
+            this.player1_hasUpgrade1 = true;
             this.player1Upgrade1UI.visible = true;
             coin.destroy();
 
@@ -206,6 +174,7 @@ class Play extends Phaser.Scene {
 
         this.physics.add.overlap(this.player2, this.upgrades, function (player, coin) {
 
+            this.player2_hasUpgrade1 = true;
             this.player2Upgrade1UI.visible = true;
             coin.destroy();
 
@@ -260,10 +229,10 @@ class Play extends Phaser.Scene {
 
         
 
-        if(!this.gameOver && this.hunger <= 0){
-            this.gameOver = true;
-            this.sound.play('death');
-        }
+        // if(!this.gameOver && this.hunger <= 0){
+        //     this.gameOver = true;
+        //     this.sound.play('death');
+        // }
 
         if(this.gameOver){
 
