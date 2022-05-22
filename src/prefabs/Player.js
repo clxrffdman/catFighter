@@ -22,7 +22,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //this.setBodySize(600,300,false);
         this.isPlayerOneS = isPlayerOne;
         this.isFacingRight = true;
-        
+        this.setBodySize(50,100,true);
         this.isPunching = false;
 
 
@@ -61,9 +61,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isPunching = true;
         if(this.isFacingRight){
             this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, this, true).setOrigin(-1.5,0.5);
+            if(this.isPlayerOneS){
+                this.scene.hitboxesP1.add(this.punch);
+            }
+            else{
+                this.scene.hitboxesP2.add(this.punch);
+            }
+            
         }
         else{
             this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, this, true).setOrigin(2,0.5);
+            if(this.isPlayerOneS){
+                this.scene.hitboxesP1.add(this.punch);
+            }
+            else{
+                this.scene.hitboxesP2.add(this.punch);
+            }
             this.punch.flipX = true;
             
         }
@@ -150,16 +163,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(keyS.isDown && !this.isSlide){
                 this.isSlide = true;
                 this.body.setGravityY(3400);
-                this.setBodySize(100,50,false);
+                this.setBodySize(50,50,false);
             }
             if(this.isSlide && !keyS.isDown){
                 this.isSlide = false;
                 this.body.setGravityY(1200);
-                this.setBodySize(100,100,false);
+                this.setBodySize(50,100,false);
                 this.y -= 50;
             }
         }
         else{
+
+            if(!this.canPunch){
+                if(this.scene.player2_hasUpgrade1){
+                    this.canPunch = true;
+                }
+            }
+
+            if(this.canPunch && keyO.isDown && !this.isPunching){
+                this.doPunch();
+            }
+
+
             if(keyJ.isDown){
                 this.setVelocityX(-500);
                 this.isFacingRight = false;
@@ -195,12 +220,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(keyK.isDown && !this.isSlide){
                 this.isSlide = true;
                 this.body.setGravityY(3400);
-                this.setBodySize(100,50,false);
+                this.setBodySize(50,50,false);
             }
             if(this.isSlide && !keyK.isDown){
                 this.isSlide = false;
                 this.body.setGravityY(1200);
-                this.setBodySize(100,100,false);
+                this.setBodySize(50,100,false);
                 this.y -= 50;
             }
         }
