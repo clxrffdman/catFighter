@@ -22,6 +22,8 @@ class Play extends Phaser.Scene {
         this.load.image('ground', './assets/floor_2.png');
         this.load.image('backdrop', './assets/backdrop.png');
         this.load.image('upgradeIcon1', './assets/upgradeIcon.png');
+        this.load.image('upgradeIcon2', './assets/upgradeIcon2.png');
+        this.load.image('upgradeIcon3', './assets/upgradeIcon3.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.audio('backgroundtrack', './assets/testsong.wav');
@@ -42,7 +44,7 @@ class Play extends Phaser.Scene {
         this.playerGroup = this.physics.add.group();
         this.backdrop = this.add.tileSprite(0,110, 5120, 2880,'backdrop').setOrigin(0,0).setDepth(0).setScale(0.27);
         //this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
-        this.floor = this.add.tileSprite(0, 640, 1280, 100, 'sand').setOrigin(0, 0);
+        this.floor = this.physics.add.sprite(0, 640, 'sand').setOrigin(0, 0).setFriction(1);
         this.groundVisual = this.add.tileSprite(0, 560, 2480, 500, 'ground').setOrigin(0, 0).setScale(0.5);
         this.physics.add.existing(this.floor);
         this.staticGroup.add(this.floor);
@@ -66,13 +68,17 @@ class Play extends Phaser.Scene {
         this.player2_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0,0.5).setDepth(2);
 
         //spaceships
-        this.player1 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5);
-        this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5);
-        this.player.setScale(1);
+        this.player1 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player1.setScale(1);
         this.player2.setScale(1);
 
         this.player1_hasUpgrade1 = false;
         this.player2_hasUpgrade1 = false;
+        this.player1_hasUpgrade2 = false;
+        this.player2_hasUpgrade2 = false;
+        this.player1_hasUpgrade3 = false;
+        this.player2_hasUpgrade3 = false;
         
         this.player1_health = 5;
         this.player2_health = 5;
@@ -129,9 +135,14 @@ class Play extends Phaser.Scene {
 
 
 
-        this.upgrades = this.add.group();
-        this.upgrades.enableBody = true;
+        this.upgrades1 = this.add.group();
+        this.upgrades1.enableBody = true;
 
+        this.upgrades2 = this.add.group();
+        this.upgrades2.enableBody = true;
+        
+        this.upgrades3 = this.add.group();
+        this.upgrades3.enableBody = true;
 
         this.hitboxesP1 = this.add.group();
         this.hitboxesP1.enableBody = true;
@@ -158,11 +169,11 @@ class Play extends Phaser.Scene {
         this.player1Upgrade1UI = this.add.image(borderPadding * 15 + 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
         this.player2Upgrade1UI = this.add.image(game.config.width - borderPadding * 15 - 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
         
-        this.player1Upgrade2UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
-        this.player2Upgrade2UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
+        this.player1Upgrade2UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0,0.5).setDepth(2);
+        this.player2Upgrade2UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0,0.5).setDepth(2);
 
-        this.player1Upgrade3UI = this.add.image(borderPadding * 15 + 100 + 80, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
-        this.player2Upgrade3UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 80, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0,0.5).setDepth(2);
+        this.player1Upgrade3UI = this.add.image(borderPadding * 15 + 100 + 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0,0.5).setDepth(2);
+        this.player2Upgrade3UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0,0.5).setDepth(2);
 
         this.player1Upgrade1UI.visible = false;
         this.player2Upgrade1UI.visible = false;
@@ -172,7 +183,13 @@ class Play extends Phaser.Scene {
         this.player2Upgrade3UI.visible = false;
 
         this.upgrade1 = new UpgradeCollectable(this, game.config.width / 4 * 3, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon1', Phaser.AUTO, 5);
-        this.upgrades.add(this.upgrade1);
+        this.upgrades1.add(this.upgrade1);
+
+        this.upgrade2 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 50, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon2', Phaser.AUTO, 5);
+        this.upgrades2.add(this.upgrade2);
+
+        this.upgrade3 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 100, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
+        this.upgrades3.add(this.upgrade3);
 
         // pool
         this.platformPool = this.add.group({
@@ -187,7 +204,7 @@ class Play extends Phaser.Scene {
 
 
 
-        this.physics.add.overlap(this.player, this.upgrades, function (player, coin) {
+        this.physics.add.overlap(this.player1, this.upgrades1, function (player, coin) {
 
             this.player1_hasUpgrade1 = true;
             this.player1Upgrade1UI.visible = true;
@@ -195,13 +212,46 @@ class Play extends Phaser.Scene {
 
         },null,this);
 
-        this.physics.add.overlap(this.player2, this.upgrades, function (player, coin) {
+        this.physics.add.overlap(this.player2, this.upgrades1, function (player, coin) {
 
             this.player2_hasUpgrade1 = true;
             this.player2Upgrade1UI.visible = true;
             coin.destroy();
 
         },null,this);
+
+        this.physics.add.overlap(this.player1, this.upgrades2, function (player, coin) {
+
+            this.player1_hasUpgrade2 = true;
+            this.player1Upgrade2UI.visible = true;
+            coin.destroy();
+
+        },null,this);
+
+        this.physics.add.overlap(this.player2, this.upgrades2, function (player, coin) {
+
+            this.player2_hasUpgrade2 = true;
+            this.player2Upgrade2UI.visible = true;
+            coin.destroy();
+
+        },null,this);
+
+        this.physics.add.overlap(this.player1, this.upgrades3, function (player, coin) {
+
+            this.player1_hasUpgrade3 = true;
+            this.player1Upgrade3UI.visible = true;
+            coin.destroy();
+
+        },null,this);
+
+        this.physics.add.overlap(this.player2, this.upgrades3, function (player, coin) {
+
+            this.player2_hasUpgrade3 = true;
+            this.player2Upgrade3UI.visible = true;
+            coin.destroy();
+
+        },null,this);
+
 
 
         this.physics.add.overlap(this.player2, this.hitboxesP1, function (player, coin) {
@@ -210,17 +260,41 @@ class Play extends Phaser.Scene {
                 this.player2_health -= 1;
             }
             this.updateHealthUI();
+
+            if((this.player1.x - this.player2.x) > 0){
+                this.player2.setVelocityY(-500);
+                this.player2.setVelocityX(-5000);
+                
+            }
+            else{
+                this.player2.setVelocityY(-500);
+                this.player2.setVelocityX(5000);
+                
+            }
+
             coin.destroy();
 
         },null,this);
 
-        this.physics.add.overlap(this.player, this.hitboxesP2, function (player, coin) {
+        this.physics.add.overlap(this.player1, this.hitboxesP2, function (player, coin) {
 
             if(this.player1_health > 0){
                 this.player1_health -= 1;
             }
             
             this.updateHealthUI();
+
+            if((this.player2.x - this.player1.x) > 0){
+                this.player1.setVelocityY(-500);
+                this.player1.setVelocityX(-5000);
+                
+            }
+            else{
+                this.player1.setVelocityY(-500);
+                this.player1.setVelocityX(5000);
+                
+            }
+
             coin.destroy();
 
         },null,this);
@@ -288,8 +362,16 @@ class Play extends Phaser.Scene {
         if(this.gameOver){
 
             this.speed = 0;
-            this.player.setGravityY(0);
-            this.player.setVelocityY(0);
+            this.player1.setGravityY(0);
+            this.player1.setVelocityY(0);
+            this.player1.setVelocityX(0);
+            this.player1.setAccelerationX(0);
+
+            this.player2.setGravityY(0);
+            this.player2.setVelocityY(0);
+            this.player2.setVelocityX(0);
+            this.player2.setAccelerationX(0);
+
             // this.player.anims.play('death', true);
             let scoreConfig = {
                 fontFamily: 'Noto Sans',
@@ -329,7 +411,7 @@ class Play extends Phaser.Scene {
 
 
         if (!this.gameOver) {
-            this.player.update();
+            this.player1.update();
             this.player2.update();
         }
 

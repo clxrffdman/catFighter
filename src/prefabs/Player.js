@@ -25,10 +25,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBodySize(50,100,true);
         this.isPunching = false;
 
-
+        this.setMaxVelocity(500);
         this.canPunch = false;
-
-        this.health = 5;
+        this.canSuperJump = false;
+        this.canSpin = false;
         
     }
 
@@ -60,7 +60,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     doPunch(){
         this.isPunching = true;
         if(this.isFacingRight){
-            this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, this, true).setOrigin(-1.5,0.5);
+            this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, this, true).setOrigin(-0.5,0.5).setScale(1.75);
             if(this.isPlayerOneS){
                 this.scene.hitboxesP1.add(this.punch);
             }
@@ -70,7 +70,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             
         }
         else{
-            this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, this, true).setOrigin(2,0.5);
+            this.punch = new Punch(this.scene, this.x, this.y, 'punch', Phaser.AUTO, this, true).setOrigin(1.4,0.5).setScale(1.75);;
             if(this.isPlayerOneS){
                 this.scene.hitboxesP1.add(this.punch);
             }
@@ -129,17 +129,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             
             if(keyA.isDown){
-                this.setVelocityX(-500);
+                this.setAccelerationX(-3000);
                 this.isFacingRight = false;
             }
     
             if(keyD.isDown){
-                this.setVelocityX(500);
+                this.setAccelerationX(3000);
                 this.isFacingRight = true;
             }
     
             if(!keyA.isDown && !keyD.isDown){
-                this.setVelocityX(0);
+                this.setAccelerationX(0);
+                this.setDragX(1500);
             }
             //console.log(this.isGrounded);
             if(keyW.isDown){
@@ -186,17 +187,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
             if(keyJ.isDown){
-                this.setVelocityX(-500);
+                this.setAccelerationX(-3000);
                 this.isFacingRight = false;
             }
     
             if(keyL.isDown){
-                this.setVelocityX(500);
+                this.setAccelerationX(3000);
                 this.isFacingRight = true;
             }
     
             if(!keyJ.isDown && !keyL.isDown){
-                this.setVelocityX(0);
+                this.setAccelerationX(0);
+                this.setDragX(1500);
             }
             //console.log(this.isGrounded);
             if(keyI.isDown){
