@@ -15,8 +15,8 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png');
         // this.load.image('platform', './assets/floor.png');
         this.load.image('emptyBar', './assets/emptyHealthBar.png');
-        this.load.image('barRed', './assets/emptyhealthBarBlue.png');
-        this.load.image('barBlue', './assets/emptyhealthBarRed.png');
+        this.load.image('barRed', './assets/emptyHealthBarBlue.png');
+        this.load.image('barBlue', './assets/emptyHealthBarRed.png');
         this.load.image('platform', './assets/testPlatformTile.png');
         this.load.image('sand', './assets/floor_1.png');
         this.load.image('ground', './assets/floor_2.png');
@@ -75,7 +75,7 @@ class Play extends Phaser.Scene {
         //spaceships
         this.player1 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
         this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player1.setScale(1)
+        this.player1.setScale(1);
         this.player2.setScale(1);
 
         this.player1_hasUpgrade1 = false;
