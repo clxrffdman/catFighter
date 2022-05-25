@@ -75,7 +75,7 @@ class Play extends Phaser.Scene {
         //spaceships
         this.player1 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
         this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player1.setScale(1);
+        this.player1.setScale(1)
         this.player2.setScale(1);
 
         this.player1_hasUpgrade1 = false;
