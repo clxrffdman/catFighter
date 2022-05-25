@@ -18,14 +18,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumpHeld = false;
         this.isSlide = false;
         this.jumpAmount = 0;
-        this.jumpVelocity = 425;
+        this.jumpVelocity = 330;
         //this.setBodySize(600,300,false);
         this.isPlayerOneS = isPlayerOne;
         this.isFacingRight = true;
         this.setBodySize(50,100,true);
         this.isPunching = false;
-
-        this.setMaxVelocity(500);
+        this.isSuperJumping = false;
+        this.setMaxVelocity(600,1000);
         this.canPunch = false;
         this.canSuperJump = false;
         this.canSpin = false;
@@ -51,6 +51,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         
         this.isGrounded = false;
+    }
+
+    doSuperJump(){
+        this.isSuperJumping = true;
+        this.setVelocityY(-800);
+        this.setAccelerationY(-300);
+        this.scene.sound.play('jump');
+        this.timedEvent = this.scene.time.delayedCall(500, this.endJump, [], this);
+        this.timedEvent = this.scene.time.delayedCall(3000, this.stopSuperJumping, [], this);
+    }
+
+    endJump(){
+        this.setAccelerationY(0);
+    }
+
+    stopSuperJumping(){
+        this.isSuperJumping = false;
+        
     }
 
     modifyJumpHeight(arg){
@@ -117,6 +135,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if(this.isPlayerOneS){
 
+            //punch
             if(!this.canPunch){
                 if(this.scene.player1_hasUpgrade1){
                     this.canPunch = true;
@@ -125,6 +144,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if(this.canPunch && keyE.isDown && !this.isPunching){
                 this.doPunch();
+            }
+
+            //super jump
+            if(!this.canSuperJump){
+                if(this.scene.player1_hasUpgrade3){
+                    this.canSuperJump = true;
+                }
+            }
+
+            if(this.canSuperJump && keyR.isDown && !this.isSuperJumping){
+                this.doSuperJump();
             }
 
             
@@ -138,9 +168,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.isFacingRight = true;
             }
     
-            if(!keyA.isDown && !keyD.isDown){
+            if(!keyA.isDown && !keyD.isDown && !keyS.isDown){
                 this.setAccelerationX(0);
                 this.setDragX(1500);
+            }
+
+            if((keyA.isDown || keyD.isDown) && keyS.isDown){
+                this.setAccelerationX(0);
+                this.setDragX(400);
+            }
+
+            if((!keyA.isDown && !keyD.isDown) && keyS.isDown){
+                this.setAccelerationX(0);
+                this.setDragX(400);
             }
             //console.log(this.isGrounded);
             if(keyW.isDown){
@@ -185,21 +225,43 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.doPunch();
             }
 
+            //super jump
+            if(!this.canSuperJump){
+                if(this.scene.player2_hasUpgrade3){
+                    this.canSuperJump = true;
+                }
+            }
 
-            if(keyJ.isDown){
+            if(this.canSuperJump && keyP.isDown && !this.isSuperJumping){
+                this.doSuperJump();
+            }
+
+
+            if(keyJ.isDown && !keyK.isDown){
                 this.setAccelerationX(-3000);
                 this.isFacingRight = false;
             }
     
-            if(keyL.isDown){
+            if(keyL.isDown && !keyK.isDown){
                 this.setAccelerationX(3000);
                 this.isFacingRight = true;
             }
     
-            if(!keyJ.isDown && !keyL.isDown){
+            if(!keyJ.isDown && !keyL.isDown && !keyK.isDown){
                 this.setAccelerationX(0);
                 this.setDragX(1500);
             }
+
+            if((keyJ.isDown || keyL.isDown) && keyK.isDown){
+                this.setAccelerationX(0);
+                this.setDragX(400);
+            }
+
+            if((!keyJ.isDown && !keyL.isDown) && keyK.isDown){
+                this.setAccelerationX(0);
+                this.setDragX(400);
+            }
+
             //console.log(this.isGrounded);
             if(keyI.isDown){
                 if(this.body.onFloor()){

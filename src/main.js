@@ -42,3 +42,6 @@ let borderPadding = borderUISize / 3;
 
 let keyW, keyA, keyS, keyD, keyE, keyR, keyF, keyC, keyX, keyI,keyJ,keyK,keyL,keyO,keyP,keySemicolon,keyPeriod,keyComma,keyUP,keyDOWN,keyLEFT,keyRIGHT;
 
+let scoreP1 = 0;
+let scoreP2 = 0;
+
