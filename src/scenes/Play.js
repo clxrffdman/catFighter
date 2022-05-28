@@ -12,11 +12,12 @@ class Play extends Phaser.Scene {
         this.load.image('spike', './assets/coral.png');
         this.load.image('turtle', './assets/cat1.png');
         this.load.image('punch', './assets/punchHitbox.png');
+        this.load.image('circleHitbox', './assets/circleHitbox.png');
         this.load.image('starfield', './assets/starfield.png');
         // this.load.image('platform', './assets/floor.png');
         this.load.image('emptyBar', './assets/emptyHealthBar.png');
-        this.load.image('barRed', './assets/emptyHealthBarBlue.png');
-        this.load.image('barBlue', './assets/emptyHealthBarRed.png');
+        this.load.image('barRed', './assets/emptyHealthBarRed.png');
+        this.load.image('barBlue', './assets/emptyHealthBarBlue.png');
         this.load.image('platform', './assets/testPlatformTile.png');
         this.load.image('sand', './assets/floor_1.png');
         this.load.image('ground', './assets/floor_2.png');
@@ -113,6 +114,8 @@ class Play extends Phaser.Scene {
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 
         keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
 
         //Player 2 Controls
 
@@ -123,6 +126,8 @@ class Play extends Phaser.Scene {
 
         keyO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        keySemicolon = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SEMICOLON);
+        keyPeriod = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PERIOD);
 
 
 
@@ -182,9 +187,9 @@ class Play extends Phaser.Scene {
         this.scoreP1Text = this.add.text(game.config.width / 2 - 30, borderUISize + borderPadding * 2, scoreP1, scoreConfig).setOrigin(0.5).setDepth(2);
         this.scoreP2Text = this.add.text(game.config.width / 2 + 30, borderUISize + borderPadding * 2, scoreP2, scoreConfig).setOrigin(0.5).setDepth(2);
 
-        this.three = this.add.image(game.config.width/2,game.config.height/2, "three");
-        this.two = this.add.image(game.config.width/2,game.config.height/2, "two");
-        this.one = this.add.image(game.config.width/2,game.config.height/2, "one");
+        this.three = this.add.image(game.config.width / 2, game.config.height / 2, "three");
+        this.two = this.add.image(game.config.width / 2, game.config.height / 2, "two");
+        this.one = this.add.image(game.config.width / 2, game.config.height / 2, "one");
 
         this.three.visible = false;
         this.two.visible = false;
@@ -358,7 +363,7 @@ class Play extends Phaser.Scene {
                 this.player2.setVelocityX(5000);
 
             }
-            this.cameras.main.shake(200,0.002);
+            this.cameras.main.shake(200, 0.002);
             coin.destroy();
 
         }, null, this);
@@ -381,7 +386,7 @@ class Play extends Phaser.Scene {
                 this.player1.setVelocityX(5000);
 
             }
-            this.cameras.main.shake(200,0.002);
+            this.cameras.main.shake(200, 0.002);
             coin.destroy();
 
         }, null, this);
@@ -404,17 +409,17 @@ class Play extends Phaser.Scene {
 
     }
 
-    threeVisible(){
-this.three.visible = true;
+    threeVisible() {
+        this.three.visible = true;
     }
 
-    twoVisible(){
+    twoVisible() {
         this.three.visible = false;
         this.two.visible = true;
 
     }
 
-    oneVisible(){
+    oneVisible() {
         this.two.visible = false;
         this.one.visible = true;
     }
@@ -426,12 +431,12 @@ this.three.visible = true;
         //console.log(this.speed + " current speed");
     }
 
-    restartScene(){
+    restartScene() {
         this.backgroundMusic.stop();
         this.scene.restart();
     }
 
-    startFight(){
+    startFight() {
         this.beginCombat = true;
         this.one.visible = false;
     }
@@ -484,8 +489,8 @@ this.three.visible = true;
                 scoreP2 += 1;
             }
 
-            if(scoreP1 < 5 && scoreP2 < 5){
-                
+            if (scoreP1 < 5 && scoreP2 < 5) {
+
                 this.cameras.main.fadeOut(800);
                 this.timedEventCombat = this.time.delayedCall(801, this.restartScene, [], this);
             }
@@ -526,13 +531,13 @@ this.three.visible = true;
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 1 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                
+
             }
             else if (scoreP2 >= 5) {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 2 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                
+
             }
             else {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'Round Complete.', scoreConfig).setOrigin(0.5);
@@ -541,26 +546,26 @@ this.three.visible = true;
                 if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
                     this.backgroundMusic.stop();
                     this.scene.start("menuScene");
-                    
+
                 }
 
-                
+
             }
 
-            
 
 
 
-            
 
-            
+
+
+
         }
 
 
 
 
 
-        
+
 
         //scroll backdrop
         //this.starfield.tilePositionX -= 4;

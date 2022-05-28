@@ -25,6 +25,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBodySize(50,100,true);
         this.isPunching = false;
         this.isSuperJumping = false;
+        this.isSpinning = false;
+
         this.setMaxVelocity(600,1000);
         this.canPunch = false;
         this.canSuperJump = false;
@@ -64,6 +66,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     endJump(){
         this.setAccelerationY(0);
+    }
+
+
+    doSpin(){
+        this.isSpinning = true;
+        this.spin = new Spin(this.scene, this.x, this.y, 'circleHitbox', Phaser.AUTO, this, true).setOrigin(0.5,0.5).setScale(2.75);
+        if(this.isPlayerOneS){
+            this.scene.hitboxesP1.add(this.spin);
+        }
+        else{
+            this.scene.hitboxesP2.add(this.spin);
+        }
+        this.timedEvent = this.scene.time.delayedCall(3000, this.stopSpinning, [], this);
+    }
+
+    stopSpinning(){
+        this.isSpinning = false;
     }
 
     stopSuperJumping(){
@@ -113,6 +132,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.isPunching){
             this.punch.update();
         }
+
+        if(this.isSpinning){
+            this.spin.update();
+        }
         // if(this.scene.isGround){
         //     this.isGrounded = true;
         // }
@@ -144,6 +167,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if(this.canPunch && keyE.isDown && !this.isPunching){
                 this.doPunch();
+            }
+
+            //spin
+            if(!this.canSpin){
+                if(this.scene.player1_hasUpgrade4){
+                    this.canSpin = true;
+                }
+            }
+
+            if(this.canSpin && keyF.isDown && !this.isSpinning){
+                this.doSpin();
             }
 
             //super jump
@@ -223,6 +257,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if(this.canPunch && keyO.isDown && !this.isPunching){
                 this.doPunch();
+            }
+
+            //spin
+            if(!this.canSpin){
+                if(this.scene.player2_hasUpgrade4){
+                    this.canSpin = true;
+                }
+            }
+
+            if(this.canSpin && keySemicolon.isDown && !this.isSpinning){
+                this.doSpin();
             }
 
             //super jump
