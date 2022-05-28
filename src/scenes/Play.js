@@ -40,15 +40,44 @@ class Play extends Phaser.Scene {
         this.load.audio('up', './assets/menuup.wav');
         this.load.audio('lettuce', './assets/lettuce.wav');
         this.load.atlas('haroldanims', './assets/haroldanims.png', './assets/haroldanims.json');
+
+        this.load.spritesheet("tilesheet", "./assets/colored_transparent_packed.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
+        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel1-2.json");    // Tiled JSON file
+
+
     }
 
 
     create() {
+
+        // add a tilemap
+        const map = this.add.tilemap("platform_map");
+        // add a tileset to the map
+        const tileset = map.addTilesetImage("testTileset");
+        // create tilemap layers
+        const groundLayer = map.createLayer("Tile Layer 1", tileset, 0, 0).setScale(3);
+
+        groundLayer.x = game.config.width/4;
+        groundLayer.y = -200;
+
+
+        groundLayer.setCollisionByProperty({ 
+            collides: true
+        });
+
+        
+        
+        const p1Spawn = map.findObject("Objects", obj => obj.name === "P1 Spawn");
+
         //backdrop
         this.physics.world.setFPS(60);
         this.staticGroup = this.physics.add.staticGroup();
         this.playerGroup = this.physics.add.group();
-        this.backdrop = this.add.tileSprite(0, 110, 5120, 2880, 'backdrop').setOrigin(0, 0).setDepth(0).setScale(0.27);
+        //this.backdrop = this.add.tileSprite(0, 110, 5120, 2880, 'backdrop').setOrigin(0, 0).setDepth(0).setScale(0.27);
         //this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         this.floor = this.physics.add.sprite(0, 640, 'sand').setOrigin(0, 0).setFriction(1);
         this.groundVisual = this.add.tileSprite(0, 560, 2480, 500, 'ground').setOrigin(0, 0).setScale(0.5);
@@ -74,10 +103,13 @@ class Play extends Phaser.Scene {
         this.player2_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0, 0.5).setDepth(2);
 
         //spaceships
-        this.player1 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player1 = new Player(this, p1Spawn.x, p1Spawn.y, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
         this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
         this.player1.setScale(1);
         this.player2.setScale(1);
+
+        this.physics.add.collider(this.player1, groundLayer);
+        this.cameras.main.startFollow(this.player1);
 
         this.player1_hasUpgrade1 = false;
         this.player2_hasUpgrade1 = false;
