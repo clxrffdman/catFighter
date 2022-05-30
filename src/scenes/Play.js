@@ -59,10 +59,10 @@ class Play extends Phaser.Scene {
         // add a tileset to the map
         const tileset = map.addTilesetImage("testTileset");
         // create tilemap layers
-        const groundLayer = map.createLayer("Tile Layer 1", tileset, 0, 0).setScale(3);
+        const groundLayer = map.createLayer("Tile Layer 1", tileset, 0, 0).setScale(2);
 
-        groundLayer.x = game.config.width/4;
-        groundLayer.y = -200;
+        // groundLayer.x = game.config.width/4;
+        // groundLayer.y = 200;
 
 
         groundLayer.setCollisionByProperty({ 
@@ -73,18 +73,33 @@ class Play extends Phaser.Scene {
         
         const p1Spawn = map.findObject("Objects", obj => obj.name === "P1 Spawn");
 
+        p1Spawn.x *= 2;
+        p1Spawn.y *= 2;
+
+        this.upgrade1s = map.createFromObjects("Objects", {
+            name: "pawPowerup",
+        });
+
+
+        
+
+        
+        
+
+        this.upgrade1s.image = 'upgradeIcon1';
+
         //backdrop
         this.physics.world.setFPS(60);
         this.staticGroup = this.physics.add.staticGroup();
         this.playerGroup = this.physics.add.group();
         //this.backdrop = this.add.tileSprite(0, 110, 5120, 2880, 'backdrop').setOrigin(0, 0).setDepth(0).setScale(0.27);
         //this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
-        this.floor = this.physics.add.sprite(0, 640, 'sand').setOrigin(0, 0).setFriction(1);
-        this.groundVisual = this.add.tileSprite(0, 560, 2480, 500, 'ground').setOrigin(0, 0).setScale(0.5);
-        this.physics.add.existing(this.floor);
-        this.staticGroup.add(this.floor);
-        this.floor.body.allowGravity = false;
-        this.floor.body.immovable = true;
+        // this.floor = this.physics.add.sprite(0, 640, 'sand').setOrigin(0, 0).setFriction(1);
+        // this.groundVisual = this.add.tileSprite(0, 560, 2480, 500, 'ground').setOrigin(0, 0).setScale(0.5);
+        // this.physics.add.existing(this.floor);
+        // this.staticGroup.add(this.floor);
+        // this.floor.body.allowGravity = false;
+        // this.floor.body.immovable = true;
         this.backgroundMusic = this.sound.add('backgroundtrack');
         this.backgroundMusic.loop = true; // This is what you are looking for
         this.backgroundMusic.play();
@@ -109,6 +124,7 @@ class Play extends Phaser.Scene {
         this.player2.setScale(1);
 
         this.physics.add.collider(this.player1, groundLayer);
+        this.physics.add.collider(this.player2, groundLayer);
         this.cameras.main.startFollow(this.player1);
 
         this.player1_hasUpgrade1 = false;
@@ -179,8 +195,20 @@ class Play extends Phaser.Scene {
         });
 
 
+        
 
-        this.upgrades1 = this.add.group();
+        // this.upgrades1.add(this.upgrade1s);
+
+        this.upgrades1 = this.add.group(this.upgrade1s);
+        
+        this.upgrades1.children.each(function(upgrade) {
+            upgrade.x *= 2;
+            upgrade.y *= 2;
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon1', Phaser.AUTO, 5);
+            this.upgrades1.add(upgrade);
+          }, this);
+
+        // this.upgrades1.add(this.upgrade1s);
         this.upgrades1.enableBody = true;
 
         this.upgrades2 = this.add.group();
@@ -257,8 +285,8 @@ class Play extends Phaser.Scene {
         this.player1Upgrade5UI.visible = false;
         this.player2Upgrade5UI.visible = false;
 
-        this.upgrade1 = new UpgradeCollectable(this, game.config.width / 4 * 3, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon1', Phaser.AUTO, 5);
-        this.upgrades1.add(this.upgrade1);
+        // this.upgrade1 = new UpgradeCollectable(this, game.config.width / 4 * 3, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon1', Phaser.AUTO, 5);
+        // this.upgrades1.add(this.upgrade1);
 
         this.upgrade2 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 50, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon2', Phaser.AUTO, 5);
         this.upgrades2.add(this.upgrade2);

@@ -10,8 +10,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isGrounded = false;
         this.setScale(2);
         //this.setBounce(1, 1);
-        this.setCollideWorldBounds(true);
-        this.body.onWorldBounds = true;
+        // this.setCollideWorldBounds(true);
+        // this.body.onWorldBounds = true;
         this.body.setGravityY(1200);
         this.maxJumpTime = 20;
         this.currentJumpTime = 0;
