@@ -8,7 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.minJump = baseJump;
         this.isGrounded = false;
-        this.setScale(2);
+        this.setScale(1);
         //this.setBounce(1, 1);
         // this.setCollideWorldBounds(true);
         // this.body.onWorldBounds = true;

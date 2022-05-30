@@ -78,8 +78,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":588.666666666667,
-                 "y":282
+                 "x":358.666666666667,
+                 "y":312.666666666667
                 }, 
                 {
                  "gid":685,
@@ -90,8 +90,56 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":274,
-                 "y":230.666666666667
+                 "x":142,
+                 "y":258.666666666667
+                }, 
+                {
+                 "gid":879,
+                 "height":16,
+                 "id":14,
+                 "name":"pawPowerup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":168.666666666667,
+                 "y":163.333333333333
+                }, 
+                {
+                 "gid":685,
+                 "height":16,
+                 "id":16,
+                 "name":"P2 Spawn",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":585.333333333333,
+                 "y":260
+                }, 
+                {
+                 "gid":879,
+                 "height":16,
+                 "id":17,
+                 "name":"spinPowerup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":364,
+                 "y":143.333333333333
+                }, 
+                {
+                 "gid":879,
+                 "height":16,
+                 "id":18,
+                 "name":"jumpPowerup",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":554,
+                 "y":160.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -100,7 +148,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":14,
+ "nextobjectid":19,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.8.5",

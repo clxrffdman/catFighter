@@ -51,6 +51,8 @@ class Play extends Phaser.Scene {
 
     }
 
+    
+
 
     create() {
 
@@ -59,7 +61,7 @@ class Play extends Phaser.Scene {
         // add a tileset to the map
         const tileset = map.addTilesetImage("testTileset");
         // create tilemap layers
-        const groundLayer = map.createLayer("Tile Layer 1", tileset, 0, 0).setScale(2);
+        const groundLayer = map.createLayer("Tile Layer 1", tileset, -100, 0).setScale(2);
 
         // groundLayer.x = game.config.width/4;
         // groundLayer.y = 200;
@@ -72,12 +74,26 @@ class Play extends Phaser.Scene {
         
         
         const p1Spawn = map.findObject("Objects", obj => obj.name === "P1 Spawn");
+        const p2Spawn = map.findObject("Objects", obj => obj.name === "P2 Spawn");
 
         p1Spawn.x *= 2;
         p1Spawn.y *= 2;
+        p1Spawn.x -= 100;
+
+        p2Spawn.x *= 2;
+        p2Spawn.y *= 2;
+        p2Spawn.x -= 100;
 
         this.upgrade1s = map.createFromObjects("Objects", {
             name: "pawPowerup",
+        });
+
+        this.upgrade3s = map.createFromObjects("Objects", {
+            name: "jumpPowerup",
+        });
+
+        this.upgrade4s = map.createFromObjects("Objects", {
+            name: "spinPowerup",
         });
 
 
@@ -92,14 +108,6 @@ class Play extends Phaser.Scene {
         this.physics.world.setFPS(60);
         this.staticGroup = this.physics.add.staticGroup();
         this.playerGroup = this.physics.add.group();
-        //this.backdrop = this.add.tileSprite(0, 110, 5120, 2880, 'backdrop').setOrigin(0, 0).setDepth(0).setScale(0.27);
-        //this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
-        // this.floor = this.physics.add.sprite(0, 640, 'sand').setOrigin(0, 0).setFriction(1);
-        // this.groundVisual = this.add.tileSprite(0, 560, 2480, 500, 'ground').setOrigin(0, 0).setScale(0.5);
-        // this.physics.add.existing(this.floor);
-        // this.staticGroup.add(this.floor);
-        // this.floor.body.allowGravity = false;
-        // this.floor.body.immovable = true;
         this.backgroundMusic = this.sound.add('backgroundtrack');
         this.backgroundMusic.loop = true; // This is what you are looking for
         this.backgroundMusic.play();
@@ -111,21 +119,26 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0).setDepth(1);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0).setDepth(1);
 
-        this.player1_healthBar = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "emptyBar").setOrigin(0, 0.5).setDepth(3);
-        this.player1_healthFill = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "barBlue").setOrigin(0, 0.5).setDepth(2);
+        this.uiGroup = this.add.group();
 
-        this.player2_healthBar = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "emptyBar").setOrigin(0, 0.5).setDepth(3);
-        this.player2_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0, 0.5).setDepth(2);
+        this.uiGroup.add(this.player2_healthBar = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "emptyBar").setOrigin(0, 0.5).setDepth(3));
+        this.player2_healthFill = this.add.image(game.config.width - borderPadding * 15, borderUISize + borderPadding * 2, "barBlue").setOrigin(0, 0.5).setDepth(2);
+
+        this.player1_healthBar = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "emptyBar").setOrigin(0, 0.5).setDepth(3);
+        this.player1_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0, 0.5).setDepth(2);
 
         //spaceships
         this.player1 = new Player(this, p1Spawn.x, p1Spawn.y, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player2 = new Player(this, game.config.width / 4, game.config.height - borderPadding - borderUISize - 150, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player1.setScale(1);
-        this.player2.setScale(1);
+        this.player2 = new Player(this, p2Spawn.x, p2Spawn.y, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player1.setScale(0.6);
+        this.player2.setScale(0.6);
 
         this.physics.add.collider(this.player1, groundLayer);
         this.physics.add.collider(this.player2, groundLayer);
-        this.cameras.main.startFollow(this.player1);
+
+        this.cameras.main.setBounds(0, 0, 1920, 1080);
+        // this.cameras.main.ignore(this.uiGroup);
+        // this.camera1 = this.cameras.add(0, 0, 1280, 720);
 
         this.player1_hasUpgrade1 = false;
         this.player2_hasUpgrade1 = false;
@@ -204,6 +217,7 @@ class Play extends Phaser.Scene {
         this.upgrades1.children.each(function(upgrade) {
             upgrade.x *= 2;
             upgrade.y *= 2;
+            upgrade.x -=100;
             upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon1', Phaser.AUTO, 5);
             this.upgrades1.add(upgrade);
           }, this);
@@ -214,10 +228,24 @@ class Play extends Phaser.Scene {
         this.upgrades2 = this.add.group();
         this.upgrades2.enableBody = true;
 
-        this.upgrades3 = this.add.group();
+        this.upgrades3 = this.add.group(this.upgrade3s);
+        this.upgrades3.children.each(function(upgrade) {
+            upgrade.x *= 2;
+            upgrade.y *= 2;
+            upgrade.x -=100;
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon3', Phaser.AUTO, 5);
+            this.upgrades3.add(upgrade);
+          }, this);
         this.upgrades3.enableBody = true;
 
-        this.upgrades4 = this.add.group();
+        this.upgrades4 = this.add.group(this.upgrade4s);
+        this.upgrades4.children.each(function(upgrade) {
+            upgrade.x *= 2;
+            upgrade.y *= 2;
+            upgrade.x -=100;
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon3', Phaser.AUTO, 5);
+            this.upgrades4.add(upgrade);
+          }, this);
         this.upgrades4.enableBody = true;
 
         this.upgrades5 = this.add.group();
@@ -288,17 +316,17 @@ class Play extends Phaser.Scene {
         // this.upgrade1 = new UpgradeCollectable(this, game.config.width / 4 * 3, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon1', Phaser.AUTO, 5);
         // this.upgrades1.add(this.upgrade1);
 
-        this.upgrade2 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 50, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon2', Phaser.AUTO, 5);
-        this.upgrades2.add(this.upgrade2);
+        // this.upgrade2 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 50, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon2', Phaser.AUTO, 5);
+        // this.upgrades2.add(this.upgrade2);
 
-        this.upgrade3 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 100, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
-        this.upgrades3.add(this.upgrade3);
+        // this.upgrade3 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 100, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
+        // this.upgrades3.add(this.upgrade3);
 
-        this.upgrade4 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 150, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
-        this.upgrades4.add(this.upgrade4);
+        // this.upgrade4 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 150, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
+        // this.upgrades4.add(this.upgrade4);
 
-        this.upgrade5 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 200, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
-        this.upgrades5.add(this.upgrade5);
+        // this.upgrade5 = new UpgradeCollectable(this, game.config.width / 4 * 3 + 200, game.config.height - borderPadding - borderUISize - 150, 'upgradeIcon3', Phaser.AUTO, 5);
+        // this.upgrades5.add(this.upgrade5);
 
         // pool
         this.platformPool = this.add.group({
@@ -530,6 +558,16 @@ class Play extends Phaser.Scene {
                 }
             }
 
+            if(this.player1.y > 1000){
+                this.player1_health = 0;
+                this.updateHealthUI();
+            }
+
+            if(this.player2.y > 1000){
+                this.player2_health = 0;
+                this.updateHealthUI();
+            }
+
 
         }
 
@@ -542,11 +580,11 @@ class Play extends Phaser.Scene {
             this.sound.play('death');
 
             if (this.player1_health == 0) {
-                scoreP1 += 1;
+                scoreP2 += 1;
             }
 
             if (this.player2_health == 0) {
-                scoreP2 += 1;
+                scoreP1 += 1;
             }
 
             if (scoreP1 < 5 && scoreP2 < 5) {
