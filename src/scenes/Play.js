@@ -10,7 +10,8 @@ class Play extends Phaser.Scene {
         // load images/tile sprites
         this.load.image('rocket', './assets/lettuce.png');
         this.load.image('spike', './assets/coral.png');
-        this.load.image('turtle', './assets/cat1.png');
+        this.load.image('cat1', './assets/catIdle.png');
+        this.load.image('cat2', './assets/cat2Idle.png');
         this.load.image('punch', './assets/punchHitbox.png');
         this.load.image('circleHitbox', './assets/circleHitbox.png');
         this.load.image('starfield', './assets/starfield.png');
@@ -40,7 +41,7 @@ class Play extends Phaser.Scene {
         this.load.audio('growl', './assets/cat_growl.mp3');
         this.load.audio('up', './assets/menuup.wav');
         this.load.audio('upgrade', './assets/upgrade.mp3');
-        this.load.atlas('haroldanims', './assets/haroldanims.png', './assets/haroldanims.json');
+        this.load.atlas('catAnims', './assets/spritesheet2.png', './assets/catsheet.json');
 
         this.load.spritesheet("tilesheet", "./assets/colored_transparent_packed.png", {
             frameWidth: 16,
@@ -97,6 +98,138 @@ class Play extends Phaser.Scene {
             name: "spinPowerup",
         });
 
+        this.anims.create({ 
+            key: 'cat1_idle', 
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat_run_1' }
+            ],
+            repeat: 1
+        });
+        this.anims.create({ 
+            key: 'cat1_run', 
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat_run_2' }
+            ],
+            repeat: -1 
+        });
+        this.anims.create({
+            key: 'cat1_hiss',
+            defaultTextureKey: 'catAnims',
+            frames: this.anims.generateFrameNames('catAnims', {      
+                prefix: 'cat_hiss_',
+                start: 1,
+                end: 2,
+                suffix: '',
+                zeroPad: 0 
+            }), 
+            frameRate: 15,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'cat1_slide',
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat_slide_2' }
+            ],
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'cat1_hurt',
+            defaultTextureKey: 'catAnims',
+            frames: this.anims.generateFrameNames('catAnims', {      
+                prefix: 'cat_run_',
+                start: 1,
+                end: 2,
+                suffix: '',
+                zeroPad: 0 
+            }), 
+            frameRate: 15,
+            repeat: 0
+        });
+        this.anims.create({
+            key: 'cat1_super_jump',
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat_superJump_2' }
+            ],
+        });
+        this.anims.create({
+            key: 'cat1_tailSpin',
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat_tailWhip_2' }
+            ],
+            // repeat: -1
+        });
+
+        this.anims.create({ 
+            key: 'cat2_idle', 
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat2_run_1' }
+            ],
+            repeat: 1
+        });
+        this.anims.create({ 
+            key: 'cat2_run', 
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat2_run_2' }
+            ],
+            repeat: -1 
+        });
+        this.anims.create({
+            key: 'cat2_hiss',
+            defaultTextureKey: 'catAnims',
+            frames: this.anims.generateFrameNames('catAnims', {      
+                prefix: 'cat2_hiss_',
+                start: 1,
+                end: 2,
+                suffix: '',
+                zeroPad: 0 
+            }), 
+            frameRate: 15,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'cat2_slide',
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat2_slide_2' }
+            ],
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'cat2_hurt',
+            defaultTextureKey: 'catAnims',
+            frames: this.anims.generateFrameNames('catAnims', {      
+                prefix: 'cat2_run_',
+                start: 1,
+                end: 2,
+                suffix: '',
+                zeroPad: 0 
+            }), 
+            frameRate: 15,
+            repeat: 0
+        });
+        this.anims.create({
+            key: 'cat2_super_jump',
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat2_superJump_2' }
+            ],
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'cat2_tailSpin',
+            defaultTextureKey: 'catAnims',
+            frames: [
+                { frame: 'cat2_tailWhip_2' }
+            ],
+        });
+
 
         
 
@@ -131,10 +264,8 @@ class Play extends Phaser.Scene {
         this.player1_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0, 0.5).setDepth(2);
 
         //spaceships
-        this.player1 = new Player(this, p1Spawn.x, p1Spawn.y, 'turtle', Phaser.AUTO, 5, true).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player2 = new Player(this, p2Spawn.x, p2Spawn.y, 'turtle', Phaser.AUTO, 5, false).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player1.setScale(0.6);
-        this.player2.setScale(0.6);
+        this.player1 = new Player(this, p1Spawn.x, p1Spawn.y, 'cat1', Phaser.AUTO, 5, true).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player2 = new Player(this, p2Spawn.x, p2Spawn.y, 'cat2', Phaser.AUTO, 5, false).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
 
         this.physics.add.collider(this.player1, groundLayer);
         this.physics.add.collider(this.player2, groundLayer);

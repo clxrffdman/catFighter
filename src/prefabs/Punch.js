@@ -7,7 +7,7 @@ class Punch extends Phaser.Physics.Arcade.Sprite {
         this.setOffset(1,1);
         this.scene = scene;
         this.host = host;
-
+        this.alpha = 0;
         this.timedEvent = this.scene.time.delayedCall(200, this.killPunch, [], this);
         
     }
