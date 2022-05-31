@@ -148,6 +148,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isPunching = true;
         this.isPunchFrame = true;
 
+        this.scene.sound.play('whip');
+
         if (this.isPlayerOneS) {
             this.anims.play('cat1_tailSpin', false);
         }

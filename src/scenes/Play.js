@@ -23,9 +23,9 @@ class Play extends Phaser.Scene {
         this.load.image('sand', './assets/floor_1.png');
         this.load.image('ground', './assets/floor_2.png');
         this.load.image('backdrop', './assets/backdrop.png');
-        this.load.image('upgradeIcon1', './assets/upgradeIcon.png');
-        this.load.image('upgradeIcon2', './assets/upgradeIcon2.png');
-        this.load.image('upgradeIcon3', './assets/upgradeIcon3.png');
+        this.load.image('upgradeIcon1', './assets/toyfish.png');
+        this.load.image('upgradeIcon2', './assets/toymouse.png');
+        this.load.image('upgradeIcon3', './assets/catnip.png');
 
         this.load.image('one', './assets/one.png');
         this.load.image('two', './assets/two.png');
@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
 
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
-        this.load.audio('backgroundtrack', './assets/musicTest.mp3');
+        this.load.audio('backgroundtrack', './assets/testsong.wav');
         this.load.audio('death', './assets/death.wav');
         this.load.audio('jump', './assets/cat_jump.mp3');
         this.load.audio('hurt', './assets/hurt.mp3');
@@ -41,6 +41,7 @@ class Play extends Phaser.Scene {
         this.load.audio('growl', './assets/cat_growl.mp3');
         this.load.audio('up', './assets/menuup.wav');
         this.load.audio('upgrade', './assets/upgrade.mp3');
+        this.load.audio('whip', './assets/whip.mp3');
         this.load.atlas('catAnims', './assets/spritesheet2.png', './assets/catsheet.json');
 
         this.load.spritesheet("tilesheet", "./assets/colored_transparent_packed.png", {
@@ -72,7 +73,8 @@ class Play extends Phaser.Scene {
         groundLayer.setCollisionByProperty({ 
             collides: true
         });
-
+        
+        this.backdrop = this.add.sprite(0,-300,'backdrop').setOrigin(0,0).setDepth(-1).setScale(0.8);
         
         
         const p1Spawn = map.findObject("Objects", obj => obj.name === "P1 Spawn");
@@ -352,7 +354,8 @@ class Play extends Phaser.Scene {
             upgrade.x *= 2;
             upgrade.y *= 2;
             upgrade.x -=100;
-            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon1', Phaser.AUTO, 5);
+            upgrade.alpha = 0;
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon1', Phaser.AUTO, 5).setScale(0.15);
             this.upgrades1.add(upgrade);
           }, this);
 
@@ -367,7 +370,8 @@ class Play extends Phaser.Scene {
             upgrade.x *= 2;
             upgrade.y *= 2;
             upgrade.x -=100;
-            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon3', Phaser.AUTO, 5);
+            upgrade.alpha = 0;
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon3', Phaser.AUTO, 5).setScale(0.1);
             this.upgrades3.add(upgrade);
           }, this);
         this.upgrades3.enableBody = true;
@@ -377,7 +381,8 @@ class Play extends Phaser.Scene {
             upgrade.x *= 2;
             upgrade.y *= 2;
             upgrade.x -=100;
-            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon2', Phaser.AUTO, 5);
+            upgrade.alpha = 0;
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon2', Phaser.AUTO, 5).setScale(0.1);
             this.upgrades4.add(upgrade);
           }, this);
         this.upgrades4.enableBody = true;
@@ -417,20 +422,20 @@ class Play extends Phaser.Scene {
         this.two.visible = false;
         this.one.visible = false;
 
-        this.player1Upgrade1UI = this.add.image(borderPadding * 15 + 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade1UI = this.add.image(game.config.width - borderPadding * 15 - 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade1UI = this.add.image(borderPadding * 15 + 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0, 0.5).setDepth(2).setScale(0.1);
+        this.player2Upgrade1UI = this.add.image(game.config.width - borderPadding * 15 - 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0, 0.5).setDepth(2).setScale(0.1);
 
-        this.player1Upgrade2UI = this.add.image(borderPadding * 15 + 100 + 120, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade2UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 120, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade2UI = this.add.image(borderPadding * 15 + 100 + 120, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2).setScale(0.05);
+        this.player2Upgrade2UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 120, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2).setScale(0.05);
 
-        this.player1Upgrade3UI = this.add.image(borderPadding * 15 + 100 + 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade3UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade3UI = this.add.image(borderPadding * 15 + 100 + 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2).setScale(0.06);
+        this.player2Upgrade3UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2).setScale(0.06);
 
-        this.player1Upgrade4UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade4UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade4UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2).setScale(0.06);
+        this.player2Upgrade4UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2).setScale(0.06);
 
-        this.player1Upgrade5UI = this.add.image(borderPadding * 15 + 100 + 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade5UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade5UI = this.add.image(borderPadding * 15 + 100 + 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2).setScale(0.1);
+        this.player2Upgrade5UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2).setScale(0.1);
 
         //UPGRADE 1: FRONT PAW -> SCRATCH
         //UPGRADE 2: BODY -> EXTRA HEALTH
@@ -757,7 +762,7 @@ class Play extends Phaser.Scene {
             let scoreConfig = {
                 fontFamily: 'Noto Sans',
                 fontSize: '28px',
-                // backgroundColor: '#F3B141',
+                backgroundColor: '#F3B141',
                 color: '#376E60',
                 align: 'right',
                 padding: {
@@ -794,8 +799,8 @@ class Play extends Phaser.Scene {
 
             }
             else {
-                this.add.text(game.config.width / 2, game.config.height / 2, 'Round Complete.', scoreConfig).setOrigin(0.5);
-                this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to go to next Round or ← to Quit', scoreConfig).setOrigin(0.5);
+                // this.add.text(game.config.width / 2, game.config.height / 2, 'Round Complete.', scoreConfig).setOrigin(0.5);
+                // this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to go to next Round or ← to Quit', scoreConfig).setOrigin(0.5);
 
                 if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
                     this.backgroundMusic.stop();
