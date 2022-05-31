@@ -246,7 +246,7 @@ class Play extends Phaser.Scene {
             upgrade.x *= 2;
             upgrade.y *= 2;
             upgrade.x -=100;
-            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon3', Phaser.AUTO, 5);
+            upgrade = new UpgradeCollectable(this, upgrade.x, upgrade.y, 'upgradeIcon2', Phaser.AUTO, 5);
             this.upgrades4.add(upgrade);
           }, this);
         this.upgrades4.enableBody = true;
@@ -295,8 +295,8 @@ class Play extends Phaser.Scene {
         this.player1Upgrade3UI = this.add.image(borderPadding * 15 + 100 + 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
         this.player2Upgrade3UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
 
-        this.player1Upgrade4UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade4UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade4UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
+        this.player2Upgrade4UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
 
         this.player1Upgrade5UI = this.add.image(borderPadding * 15 + 100 + 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
         this.player2Upgrade5UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
