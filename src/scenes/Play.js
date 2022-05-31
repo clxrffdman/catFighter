@@ -47,7 +47,7 @@ class Play extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel1-2.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel2.json");    // Tiled JSON file
 
 
     }
@@ -642,11 +642,23 @@ class Play extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 1 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
+                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+                    this.backgroundMusic.stop();
+                    this.scene.start("menuScene");
+
+                }
+
 
             }
             else if (scoreP2 >= 5) {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 2 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
+
+                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+                    this.backgroundMusic.stop();
+                    this.scene.start("menuScene");
+
+                }
 
 
             }

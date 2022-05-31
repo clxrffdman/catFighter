@@ -239,13 +239,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(keyS.isDown && !this.isSlide){
                 this.isSlide = true;
                 this.body.setGravityY(3400);
-                this.setBodySize(50,50,false);
+                this.setBodySize(50,45,false);
+                this.y += 5;
             }
             if(this.isSlide && !keyS.isDown){
                 this.isSlide = false;
                 this.body.setGravityY(1200);
                 this.setBodySize(50,100,false);
-                this.y -= 50;
+                this.y -= 55;
             }
         }
         else{
@@ -331,13 +332,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(keyK.isDown && !this.isSlide){
                 this.isSlide = true;
                 this.body.setGravityY(3400);
-                this.setBodySize(50,50,false);
+                this.setBodySize(50,45,false);
+                this.y += 5;
             }
             if(this.isSlide && !keyK.isDown){
                 this.isSlide = false;
                 this.body.setGravityY(1200);
                 this.setBodySize(50,100,false);
-                this.y -= 50;
+                this.y -= 55;
             }
         }
 
