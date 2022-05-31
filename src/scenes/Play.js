@@ -32,13 +32,14 @@ class Play extends Phaser.Scene {
 
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
-        this.load.audio('backgroundtrack', './assets/testsong.wav');
+        this.load.audio('backgroundtrack', './assets/musicTest.mp3');
         this.load.audio('death', './assets/death.wav');
-        this.load.audio('jump', './assets/jump.wav');
+        this.load.audio('jump', './assets/cat_jump.mp3');
         this.load.audio('hurt', './assets/hurt.mp3');
-        this.load.audio('grow', './assets/grow.wav');
+        this.load.audio('super_jump', './assets/cat_superjump.mp3');
+        this.load.audio('growl', './assets/cat_growl.mp3');
         this.load.audio('up', './assets/menuup.wav');
-        this.load.audio('lettuce', './assets/lettuce.wav');
+        this.load.audio('upgrade', './assets/upgrade.mp3');
         this.load.atlas('haroldanims', './assets/haroldanims.png', './assets/haroldanims.json');
 
         this.load.spritesheet("tilesheet", "./assets/colored_transparent_packed.png", {
@@ -110,7 +111,9 @@ class Play extends Phaser.Scene {
         this.playerGroup = this.physics.add.group();
         this.backgroundMusic = this.sound.add('backgroundtrack');
         this.backgroundMusic.loop = true; // This is what you are looking for
+        this.backgroundMusic.setVolume(0.2);
         this.backgroundMusic.play();
+        
 
         //UI
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0xB8E1FF).setOrigin(0, 0.5).setDepth(1);
@@ -286,14 +289,14 @@ class Play extends Phaser.Scene {
         this.player1Upgrade1UI = this.add.image(borderPadding * 15 + 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0, 0.5).setDepth(2);
         this.player2Upgrade1UI = this.add.image(game.config.width - borderPadding * 15 - 100, borderUISize + borderPadding * 2, "upgradeIcon1").setOrigin(0, 0.5).setDepth(2);
 
-        this.player1Upgrade2UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade2UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade2UI = this.add.image(borderPadding * 15 + 100 + 120, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
+        this.player2Upgrade2UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 120, borderUISize + borderPadding * 2, "upgradeIcon2").setOrigin(0, 0.5).setDepth(2);
 
         this.player1Upgrade3UI = this.add.image(borderPadding * 15 + 100 + 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
         this.player2Upgrade3UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 80, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
 
-        this.player1Upgrade4UI = this.add.image(borderPadding * 15 + 100 + 120, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
-        this.player2Upgrade4UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 120, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
+        this.player1Upgrade4UI = this.add.image(borderPadding * 15 + 100 + 40, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
+        this.player2Upgrade4UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 40, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
 
         this.player1Upgrade5UI = this.add.image(borderPadding * 15 + 100 + 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
         this.player2Upgrade5UI = this.add.image(game.config.width - borderPadding * 15 - 100 - 160, borderUISize + borderPadding * 2, "upgradeIcon3").setOrigin(0, 0.5).setDepth(2);
@@ -345,6 +348,7 @@ class Play extends Phaser.Scene {
 
             this.player1_hasUpgrade1 = true;
             this.player1Upgrade1UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -353,6 +357,7 @@ class Play extends Phaser.Scene {
 
             this.player2_hasUpgrade1 = true;
             this.player2Upgrade1UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -362,6 +367,7 @@ class Play extends Phaser.Scene {
             if (!this.player1_hasUpgrade2) {
                 this.player1_hasUpgrade2 = true;
                 this.player1Upgrade2UI.visible = true;
+                this.sound.play('upgrade');
                 this.player1_maxHealth += 5;
                 this.player1_health += 5;
                 coin.destroy();
@@ -375,6 +381,7 @@ class Play extends Phaser.Scene {
             if (!this.player2_hasUpgrade2) {
                 this.player2_hasUpgrade2 = true;
                 this.player2Upgrade2UI.visible = true;
+                this.sound.play('upgrade');
                 this.player2_maxHealth += 5;
                 this.player2_health += 5;
                 coin.destroy();
@@ -386,6 +393,7 @@ class Play extends Phaser.Scene {
 
             this.player1_hasUpgrade3 = true;
             this.player1Upgrade3UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -394,6 +402,7 @@ class Play extends Phaser.Scene {
 
             this.player2_hasUpgrade3 = true;
             this.player2Upgrade3UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -402,6 +411,7 @@ class Play extends Phaser.Scene {
 
             this.player1_hasUpgrade4 = true;
             this.player1Upgrade4UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -410,6 +420,7 @@ class Play extends Phaser.Scene {
 
             this.player2_hasUpgrade4 = true;
             this.player2Upgrade4UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -418,6 +429,7 @@ class Play extends Phaser.Scene {
 
             this.player1_hasUpgrade5 = true;
             this.player1Upgrade5UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);
@@ -426,6 +438,7 @@ class Play extends Phaser.Scene {
 
             this.player2_hasUpgrade5 = true;
             this.player2Upgrade5UI.visible = true;
+            this.sound.play('upgrade');
             coin.destroy();
 
         }, null, this);

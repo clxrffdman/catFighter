@@ -47,7 +47,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if(this.jumpHeld && (this.body.velocity.y < 0 || this.jumpAmount < 2) && this.currentJumpTime < this.maxJumpTime){
             this.setVelocityY(-this.jumpVelocity);
-            this.scene.sound.play('jump');
+            
             //this.setVelocity(0, -300 + (50*((this.maxJumpTime - this.currentJumpTime)/this.maxJumpTime)));
         }
 
@@ -59,7 +59,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isSuperJumping = true;
         this.setVelocityY(-800);
         this.setAccelerationY(-300);
-        this.scene.sound.play('jump');
+        this.scene.sound.play('super_jump');
         this.timedEvent = this.scene.time.delayedCall(500, this.endJump, [], this);
         this.timedEvent = this.scene.time.delayedCall(3000, this.stopSuperJumping, [], this);
     }
@@ -226,6 +226,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.jumpHeld = true;
                     this.currentJumpTime = 0;
                     this.jumpAmount++;
+                    this.scene.sound.play('jump');
                 }
                 this.doJump();
                 
@@ -317,6 +318,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.jumpHeld = true;
                     this.currentJumpTime = 0;
                     this.jumpAmount++;
+                    this.scene.sound.play('jump');
                 }
                 this.doJump();
                 
