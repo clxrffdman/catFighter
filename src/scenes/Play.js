@@ -283,11 +283,11 @@ class Play extends Phaser.Scene {
         this.player1_hasUpgrade3 = false;
         this.player2_hasUpgrade3 = false;
 
-        this.player1_health = 5;
-        this.player2_health = 5;
+        this.player1_health = 8;
+        this.player2_health = 8;
 
-        this.player1_maxHealth = 5;
-        this.player2_maxHealth = 5;
+        this.player1_maxHealth = 8;
+        this.player2_maxHealth = 8;
 
 
 
@@ -670,6 +670,12 @@ class Play extends Phaser.Scene {
 
     restartScene() {
         this.backgroundMusic.stop();
+
+        // if(Phaser.Math.Between(0,2) == 0){
+
+        //     this.scene.start("menuScene");
+        // }
+
         this.scene.restart();
     }
 
