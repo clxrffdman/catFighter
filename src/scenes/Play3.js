@@ -1,13 +1,14 @@
-class Play extends Phaser.Scene {
+class PlayThree extends Phaser.Scene {
     hunger = 0;
     constructor() {
-        super("playScene");
+        super("play3Scene");
     }
 
 
 
     preload() {
         // load images/tile sprites
+        console.log("Play3: preload");
         this.load.image('rocket', './assets/lettuce.png');
         this.load.image('spike', './assets/coral.png');
         this.load.image('cat1', './assets/catIdle.png');
@@ -49,7 +50,7 @@ class Play extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel2.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel3.json");    // Tiled JSON file
 
 
     }
@@ -683,7 +684,6 @@ class Play extends Phaser.Scene {
         if(this.loadIndex == 2){
 
             this.scene.start("play4Scene");
-
         }
 
         

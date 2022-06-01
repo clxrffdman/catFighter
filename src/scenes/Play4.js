@@ -1,13 +1,14 @@
-class Play extends Phaser.Scene {
+class PlayFour extends Phaser.Scene {
     hunger = 0;
     constructor() {
-        super("playScene");
+        super("play4Scene");
     }
 
 
 
     preload() {
         // load images/tile sprites
+        console.log("Play4: preload");
         this.load.image('rocket', './assets/lettuce.png');
         this.load.image('spike', './assets/coral.png');
         this.load.image('cat1', './assets/catIdle.png');
@@ -49,7 +50,7 @@ class Play extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel2.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel4.json");    // Tiled JSON file
 
 
     }
@@ -671,22 +672,12 @@ class Play extends Phaser.Scene {
     restartScene() {
         this.backgroundMusic.stop();
 
-        this.loadIndex = Phaser.Math.Between(0,2);
-        if(this.loadIndex == 0){
+        // if(Phaser.Math.Between(0,2) == 0){
 
-            this.scene.start("playScene");
-        }
-        if(this.loadIndex == 1){
+        //     this.scene.start("menuScene");
+        // }
 
-            this.scene.start("play3Scene");
-        }
-        if(this.loadIndex == 2){
-
-            this.scene.start("play4Scene");
-
-        }
-
-        
+        this.scene.restart();
     }
 
     startFight() {

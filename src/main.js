@@ -30,7 +30,7 @@ let config = {
     },
     resolution: 3,
     
-    scene: [ Menu, Play, Tutorial ]
+    scene: [ Menu, Play, Tutorial, PlayThree, PlayFour ]
     
 }
 
