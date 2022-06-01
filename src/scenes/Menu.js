@@ -28,9 +28,9 @@ class Menu extends Phaser.Scene {
     this.add.text(game.config.width / 2, game.config.height / 2 - borderUISize - borderPadding, 'Cat Fighter', menuConfig).setOrigin(0.5);
     menuConfig.backgroundColor = '#00FF00';
     menuConfig.color = '#000';
-    this.add.text(game.config.width / 2, game.config.height / 2, 'Press ↑ to start!', menuConfig).setOrigin(0.5);
+    this.add.text(game.config.width / 4, game.config.height / 1.5, 'Press ↑ to start!', menuConfig).setOrigin(0.5).setDepth(1);
 
-    //this.menubackdrop = this.add.sprite(150, 0, 'menu').setOrigin(0, 0).setScale(0.35);
+    this.menubackdrop = this.add.sprite(150, 0, 'menu').setOrigin(0, 0).setScale(0.35);
 
     keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);

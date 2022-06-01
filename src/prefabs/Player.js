@@ -69,10 +69,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(-this.jumpVelocity);
 
             if (this.isPlayerOneS) {
-                this.anims.play('cat1_super_jump', false);
+                if(!this.isPunchFrame && !this.isSpinFrame){
+                    this.anims.play('cat1_super_jump', false);
+                }
             }
             else {
-                this.anims.play('cat2_super_jump', false);
+                if(!this.isPunchFrame && !this.isSpinFrame){
+                    this.anims.play('cat2_super_jump', false);
+                }
             }
 
 
