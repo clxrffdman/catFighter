@@ -35,9 +35,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.canPunch = false;
         this.canSuperJump = false;
         this.canSpin = false;
+        this.totalUpgrade = 0;
 
-
-
+        this.updateTransparency();
     }
 
     doJump() {
@@ -237,9 +237,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isPunching = false;
     }
 
+    updateTransparency(){
+        if(this.totalUpgrade == 0){
+            this.alpha = 0.55;
+        }
+        if(this.totalUpgrade == 1){
+            this.alpha = 0.7;
+        }
+        if(this.totalUpgrade == 2){
+            this.alpha = 0.85;
+        }
+        if(this.totalUpgrade == 3){
+            this.alpha = 1;
+        }
+    }
+
     update() {
 
-
+     
 
         if (this.isPunching) {
             this.punch.update();
@@ -287,7 +302,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (!this.canPunch) {
                 if (this.scene.player1_hasUpgrade1) {
+                    this.totalUpgrade+=1;
                     this.canPunch = true;
+                    this.updateTransparency();
                 }
             }
 
@@ -298,7 +315,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //spin
             if (!this.canSpin) {
                 if (this.scene.player1_hasUpgrade4) {
+                    this.totalUpgrade+=1;
                     this.canSpin = true;
+                    this.updateTransparency();
                 }
             }
 
@@ -309,7 +328,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //super jump
             if (!this.canSuperJump) {
                 if (this.scene.player1_hasUpgrade3) {
+                    this.totalUpgrade+=1;
                     this.canSuperJump = true;
+                    this.updateTransparency();
                 }
             }
 
@@ -398,7 +419,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (!this.canPunch) {
                 if (this.scene.player2_hasUpgrade1) {
+                    this.totalUpgrade+=1;
                     this.canPunch = true;
+                    this.updateTransparency();
                 }
             }
 
@@ -409,7 +432,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //spin
             if (!this.canSpin) {
                 if (this.scene.player2_hasUpgrade4) {
-                    this.canSpin = true;
+                    this.totalUpgrade+=1;
+                    this.canPunch = true;
+                    this.updateTransparency();
                 }
             }
 
@@ -420,7 +445,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //super jump
             if (!this.canSuperJump) {
                 if (this.scene.player2_hasUpgrade3) {
-                    this.canSuperJump = true;
+                    this.totalUpgrade+=1;
+                    this.canPunch = true;
+                    this.updateTransparency();
                 }
             }
 
