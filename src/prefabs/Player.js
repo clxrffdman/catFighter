@@ -45,10 +45,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(-this.jumpVelocity);
             this.scene.sound.play('jump');
             if (this.isPlayerOneS) {
-                this.anims.play('cat1_super_jump', false);
+                if(!this.isPunchFrame && !this.isSpinFrame){
+                    this.anims.play('cat1_super_jump', false);
+                }
             }
             else {
-                this.anims.play('cat2_super_jump', false);
+                if(!this.isPunchFrame && !this.isSpinFrame){
+                    this.anims.play('cat2_super_jump', false);
+                }
             }
 
 
@@ -90,10 +94,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.sound.play('super_jump');
 
         if (this.isPlayerOneS) {
-            this.anims.play('cat1_super_jump', false);
+            if(!this.isPunchFrame && !this.isSpinFrame){
+                this.anims.play('cat1_super_jump', false);
+            }
+            
         }
         else {
-            this.anims.play('cat2_super_jump', false);
+            if(!this.isPunchFrame && !this.isSpinFrame){
+                this.anims.play('cat2_super_jump', false);
+            }
         }
 
 
@@ -282,13 +291,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (keyA.isDown) {
                 this.setAccelerationX(-3000);
-
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                    this.anims.play('cat1_run', false);
+                }
                 this.isFacingRight = false;
             }
 
             if (keyD.isDown) {
                 this.setAccelerationX(3000);
-
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                    this.anims.play('cat1_run', false);
+                }
                 this.isFacingRight = true;
             }
 
@@ -389,11 +402,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (keyJ.isDown && !keyK.isDown) {
                 this.setAccelerationX(-3000);
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                    this.anims.play('cat2_run', false);
+                }
+                
                 this.isFacingRight = false;
             }
 
             if (keyL.isDown && !keyK.isDown) {
                 this.setAccelerationX(3000);
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                    this.anims.play('cat2_run', false);
+                }
                 this.isFacingRight = true;
             }
 
