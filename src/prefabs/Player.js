@@ -467,7 +467,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setBodySize(200, 115, false);
 
                 }
-
+                
                 this.anims.play('cat2_slide', false);
 
             }
