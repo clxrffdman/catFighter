@@ -140,15 +140,10 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: 'cat1_hurt',
             defaultTextureKey: 'catAnims',
-            frames: this.anims.generateFrameNames('catAnims', {      
-                prefix: 'cat_run_',
-                start: 1,
-                end: 2,
-                suffix: '',
-                zeroPad: 0 
-            }), 
-            frameRate: 15,
-            repeat: 0
+            frames: [
+                { frame: 'cat_hurt_2' }
+            ],
+            repeat: -1
         });
         this.anims.create({
             key: 'cat1_super_jump',
@@ -206,15 +201,10 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: 'cat2_hurt',
             defaultTextureKey: 'catAnims',
-            frames: this.anims.generateFrameNames('catAnims', {      
-                prefix: 'cat2_run_',
-                start: 1,
-                end: 2,
-                suffix: '',
-                zeroPad: 0 
-            }), 
-            frameRate: 15,
-            repeat: 0
+            frames: [
+                { frame: 'cat2_hurt_2' }
+            ],
+            repeat: -1
         });
         this.anims.create({
             key: 'cat2_super_jump',
@@ -589,6 +579,7 @@ class Play extends Phaser.Scene {
                 this.player2_health -= 1;
             }
             this.updateHealthUI();
+            this.player2.getHurt();
 
             if ((this.player1.x - this.player2.x) > 0) {
                 this.player2.setVelocityY(-500);
@@ -612,6 +603,7 @@ class Play extends Phaser.Scene {
             }
 
             this.updateHealthUI();
+            this.player1.getHurt();
 
             if ((this.player2.x - this.player1.x) > 0) {
                 this.player1.setVelocityY(-500);

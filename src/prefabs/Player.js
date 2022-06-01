@@ -29,6 +29,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isPunchFrame = false;
         this.isJumpFrame = false;
         this.isSpinFrame = false;
+        this.isHurtFrame = false;
 
         this.setMaxVelocity(500, 900);
         this.canPunch = false;
@@ -45,12 +46,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(-this.jumpVelocity);
             this.scene.sound.play('jump');
             if (this.isPlayerOneS) {
-                if(!this.isPunchFrame && !this.isSpinFrame){
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isHurtFrame){
                     this.anims.play('cat1_super_jump', false);
                 }
             }
             else {
-                if(!this.isPunchFrame && !this.isSpinFrame){
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isHurtFrame){
                     this.anims.play('cat2_super_jump', false);
                 }
             }
@@ -90,6 +91,30 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.isGrounded = false;
     }
+
+    stopHurtFrame(){
+        this.isHurtFrame = false;
+    }
+
+    getHurt(){
+        this.isHurtFrame = true;
+        this.scene.sound.play('hurt');
+        this.timedEvent = this.scene.time.delayedCall(500, this.stopHurtFrame, [], this);
+        if (this.isPlayerOneS) {
+            if(!this.isPunchFrame && !this.isSpinFrame){
+                this.anims.play('cat1_hurt', false);
+            }
+            
+        }
+        else {
+            if(!this.isPunchFrame && !this.isSpinFrame){
+                this.anims.play('cat2_hurt', false);
+            }
+        }
+        
+    }
+        
+    
 
     doSuperJump() {
         this.isSuperJumping = true;
@@ -238,13 +263,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (this.isPlayerOneS) {
-            if (!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame) {
+            if (!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame && !this.isHurtFrame ){
                 this.anims.play('cat1_idle', false);
             }
 
         }
         else {
-            if (!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame) {
+            if (!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame && !this.isHurtFrame) {
                 this.anims.play('cat2_idle', false);
             }
         }
@@ -295,7 +320,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (keyA.isDown) {
                 this.setAccelerationX(-3000);
-                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame && !this.isHurtFrame){
                     this.anims.play('cat1_run', false);
                 }
                 this.isFacingRight = false;
@@ -303,7 +328,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (keyD.isDown) {
                 this.setAccelerationX(3000);
-                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame && !this.isHurtFrame){
                     this.anims.play('cat1_run', false);
                 }
                 this.isFacingRight = true;
@@ -406,7 +431,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (keyJ.isDown && !keyK.isDown) {
                 this.setAccelerationX(-3000);
-                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame && !this.isHurtFrame){
                     this.anims.play('cat2_run', false);
                 }
                 
@@ -415,7 +440,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (keyL.isDown && !keyK.isDown) {
                 this.setAccelerationX(3000);
-                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame){
+                if(!this.isPunchFrame && !this.isSpinFrame && !this.isJumpFrame && !this.isHurtFrame){
                     this.anims.play('cat2_run', false);
                 }
                 this.isFacingRight = true;
