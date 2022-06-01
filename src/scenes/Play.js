@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel2.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel3.json");    // Tiled JSON file
 
 
     }
