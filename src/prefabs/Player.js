@@ -159,6 +159,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.anims.play('cat2_hiss', false);
         }
 
+        this.scene.sound.play('growl');
+
         this.spin = new Spin(this.scene, this.x, this.y, 'circleHitbox', Phaser.AUTO, this, true).setOrigin(0.5, 0.5).setScale(2.2);
         if (this.isPlayerOneS) {
             this.scene.hitboxesP1.add(this.spin);

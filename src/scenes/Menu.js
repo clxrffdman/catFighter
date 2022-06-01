@@ -57,7 +57,7 @@ class Menu extends Phaser.Scene {
         jumps: 2
       }
       this.sound.play('sfx_up');
-      this.scene.start("playScene");
+      this.scene.start("play3Scene");
     }
 
     if (Phaser.Input.Keyboard.JustDown(keyDOWN)) {

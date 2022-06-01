@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map", "./assets/testLevel2.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("platform_map2", "./assets/testLevel2.json");    // Tiled JSON file
 
 
     }
@@ -60,43 +60,43 @@ class Play extends Phaser.Scene {
     create() {
 
         // add a tilemap
-        const map = this.add.tilemap("platform_map");
+        this.map = this.add.tilemap("platform_map2");
         // add a tileset to the map
-        const tileset = map.addTilesetImage("testTileset");
+        this.tileset = this.map.addTilesetImage("testTileset");
         // create tilemap layers
-        const groundLayer = map.createLayer("Tile Layer 1", tileset, -100, 0).setScale(2);
+        this.groundLayer = this.map.createLayer("Tile Layer 1", this.tileset, -100, 0).setScale(2);
 
         // groundLayer.x = game.config.width/4;
         // groundLayer.y = 200;
 
 
-        groundLayer.setCollisionByProperty({ 
+        this.groundLayer.setCollisionByProperty({ 
             collides: true
         });
         
         this.backdrop = this.add.sprite(0,-300,'backdrop').setOrigin(0,0).setDepth(-1).setScale(0.8);
         
         
-        const p1Spawn = map.findObject("Objects", obj => obj.name === "P1 Spawn");
-        const p2Spawn = map.findObject("Objects", obj => obj.name === "P2 Spawn");
+        this.p1Spawn = this.map.findObject("Objects", obj => obj.name === "P1 Spawn");
+        this.p2Spawn = this.map.findObject("Objects", obj => obj.name === "P2 Spawn");
 
-        p1Spawn.x *= 2;
-        p1Spawn.y *= 2;
-        p1Spawn.x -= 100;
+        this.p1Spawn.x *= 2;
+        this.p1Spawn.y *= 2;
+        this.p1Spawn.x -= 100;
 
-        p2Spawn.x *= 2;
-        p2Spawn.y *= 2;
-        p2Spawn.x -= 100;
+        this.p2Spawn.x *= 2;
+        this.p2Spawn.y *= 2;
+        this.p2Spawn.x -= 100;
 
-        this.upgrade1s = map.createFromObjects("Objects", {
+        this.upgrade1s = this.map.createFromObjects("Objects", {
             name: "pawPowerup",
         });
 
-        this.upgrade3s = map.createFromObjects("Objects", {
+        this.upgrade3s = this.map.createFromObjects("Objects", {
             name: "jumpPowerup",
         });
 
-        this.upgrade4s = map.createFromObjects("Objects", {
+        this.upgrade4s = this.map.createFromObjects("Objects", {
             name: "spinPowerup",
         });
 
@@ -256,11 +256,11 @@ class Play extends Phaser.Scene {
         this.player1_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0, 0.5).setDepth(2);
 
         //spaceships
-        this.player1 = new Player(this, p1Spawn.x, p1Spawn.y, 'cat1', Phaser.AUTO, 5, true).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
-        this.player2 = new Player(this, p2Spawn.x, p2Spawn.y, 'cat2', Phaser.AUTO, 5, false).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player1 = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'cat1', Phaser.AUTO, 5, true).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
+        this.player2 = new Player(this, this.p2Spawn.x, this.p2Spawn.y, 'cat2', Phaser.AUTO, 5, false).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
 
-        this.physics.add.collider(this.player1, groundLayer);
-        this.physics.add.collider(this.player2, groundLayer);
+        this.physics.add.collider(this.player1, this.groundLayer);
+        this.physics.add.collider(this.player2, this.groundLayer);
 
         this.cameras.main.setBounds(0, 0, 1920, 1080);
         // this.cameras.main.ignore(this.uiGroup);
@@ -664,6 +664,7 @@ class Play extends Phaser.Scene {
         this.backgroundMusic.stop();
 
         this.loadIndex = Phaser.Math.Between(0,2);
+        console.log(this.loadIndex);
         if(this.loadIndex == 0){
 
             this.scene.start("playScene");
