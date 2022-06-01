@@ -35,6 +35,8 @@ class PlayThree extends Phaser.Scene {
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.audio('backgroundtrack', './assets/testsong.wav');
         this.load.audio('death', './assets/death.wav');
+        this.load.audio('oneBong', './assets/one.mp3');
+        this.load.audio('threeBong', './assets/three.mp3');
         this.load.audio('jump', './assets/cat_jump.mp3');
         this.load.audio('hurt', './assets/hurt.mp3');
         this.load.audio('super_jump', './assets/cat_superjump.mp3');
@@ -640,17 +642,20 @@ class PlayThree extends Phaser.Scene {
 
     threeVisible() {
         this.three.visible = true;
+        this.sound.play('oneBong');
     }
 
     twoVisible() {
         this.three.visible = false;
         this.two.visible = true;
+        this.sound.play('oneBong');
 
     }
 
     oneVisible() {
         this.two.visible = false;
         this.one.visible = true;
+        this.sound.play('threeBong');
     }
 
 

@@ -15,7 +15,6 @@ class Menu extends Phaser.Scene {
     let menuConfig = {
       fontFamily: 'Noto Sans',
       fontSize: '28px',
-      backgroundColor: '#F3B141',
       color: '#843605',
       align: 'right',
       padding: {
@@ -26,7 +25,6 @@ class Menu extends Phaser.Scene {
     }
 
     this.add.text(game.config.width / 2, game.config.height / 2 - borderUISize - borderPadding, 'Cat Fighter', menuConfig).setOrigin(0.5);
-    menuConfig.backgroundColor = '#00FF00';
     menuConfig.color = '#000';
     this.add.text(game.config.width / 4, game.config.height / 1.5, 'Press ↑ to start!', menuConfig).setOrigin(0.5).setDepth(1);
 

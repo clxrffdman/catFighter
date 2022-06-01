@@ -37,6 +37,8 @@ class PlayFour extends Phaser.Scene {
         this.load.audio('death', './assets/death.wav');
         this.load.audio('jump', './assets/cat_jump.mp3');
         this.load.audio('hurt', './assets/hurt.mp3');
+        this.load.audio('oneBong', './assets/one.mp3');
+        this.load.audio('threeBong', './assets/three.mp3');
         this.load.audio('super_jump', './assets/cat_superjump.mp3');
         this.load.audio('growl', './assets/cat_growl.mp3');
         this.load.audio('up', './assets/menuup.wav');
@@ -640,17 +642,20 @@ class PlayFour extends Phaser.Scene {
 
     threeVisible() {
         this.three.visible = true;
+        this.sound.play('oneBong');
     }
 
     twoVisible() {
         this.three.visible = false;
         this.two.visible = true;
+        this.sound.play('oneBong');
 
     }
 
     oneVisible() {
         this.two.visible = false;
         this.one.visible = true;
+        this.sound.play('threeBong');
     }
 
 
