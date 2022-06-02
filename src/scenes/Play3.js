@@ -668,7 +668,7 @@ class PlayThree extends Phaser.Scene {
     restartScene() {
         this.backgroundMusic.stop();
 
-        this.loadIndex = Phaser.Math.Between(0,2);
+        this.loadIndex = Phaser.Math.Between(0,4);
         console.log(this.loadIndex);
         if(this.loadIndex == 0){
 
@@ -681,6 +681,16 @@ class PlayThree extends Phaser.Scene {
         if(this.loadIndex == 2){
 
             this.scene.start("play4Scene");
+
+        }
+        if(this.loadIndex == 3){
+
+            this.scene.start("play5Scene");
+
+        }
+        if(this.loadIndex == 4){
+
+            this.scene.start("play6Scene");
 
         }
 
