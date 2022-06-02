@@ -433,9 +433,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             //spin
             if (!this.canSpin) {
-                if (this.scene.player2_hasUpgrade4) {
+               if (this.scene.player2_hasUpgrade4) {
                     this.totalUpgrade+=1;
-                    this.canPunch = true;
+                    this.canSpin = true;
                     this.updateTransparency();
                 }
             }
