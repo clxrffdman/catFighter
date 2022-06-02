@@ -1,7 +1,7 @@
-class Play extends Phaser.Scene {
+class PlaySix extends Phaser.Scene {
     hunger = 0;
     constructor() {
-        super("playScene");
+        super("play6Scene");
     }
 
 
@@ -31,14 +31,14 @@ class Play extends Phaser.Scene {
         this.load.image('two', './assets/two.png');
         this.load.image('three', './assets/three.png');
 
-        this.load.audio('oneBong', './assets/one.mp3');
-        this.load.audio('threeBong', './assets/three.mp3');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.audio('backgroundtrack', './assets/testsong.wav');
         this.load.audio('death', './assets/death.wav');
         this.load.audio('jump', './assets/cat_jump.mp3');
         this.load.audio('hurt', './assets/hurt.mp3');
+        this.load.audio('oneBong', './assets/one.mp3');
+        this.load.audio('threeBong', './assets/three.mp3');
         this.load.audio('super_jump', './assets/cat_superjump.mp3');
         this.load.audio('growl', './assets/cat_growl.mp3');
         this.load.audio('up', './assets/menuup.wav');
@@ -51,7 +51,7 @@ class Play extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map2", "./assets/testLevel2.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("platform_map6", "./assets/testLevel6.json");    // Tiled JSON file
 
 
     }
@@ -62,7 +62,7 @@ class Play extends Phaser.Scene {
     create() {
 
         // add a tilemap
-        this.map = this.add.tilemap("platform_map2");
+        this.map = this.add.tilemap("platform_map6");
         // add a tileset to the map
         this.tileset = this.map.addTilesetImage("testTileset");
         // create tilemap layers
