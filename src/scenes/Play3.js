@@ -704,6 +704,13 @@ class PlayThree extends Phaser.Scene {
 
 
 
+    loadVictoryScene(){
+        this.backgroundMusic.stop();
+        this.scene.start("victoryScene");
+    }
+
+
+
     updateHealthUI() {
         this.player1_healthFill.scaleX = 1 * (this.player1_health / this.player1_maxHealth);
         this.player2_healthFill.scaleX = 1 * (this.player2_health / this.player2_maxHealth);
@@ -802,11 +809,10 @@ class PlayThree extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 1 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
-                    this.scene.start("menuScene");
+                this.cameras.main.fadeOut(800);
+                this.timedEventCombat = this.time.delayedCall(801, this.loadVictoryScene, [], this);
 
-                }
+                
 
 
             }
@@ -814,11 +820,8 @@ class PlayThree extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 2 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
-                    this.scene.start("menuScene");
-
-                }
+                this.cameras.main.fadeOut(800);
+                this.timedEventCombat = this.time.delayedCall(801, this.loadVictoryScene, [], this);
 
 
             }

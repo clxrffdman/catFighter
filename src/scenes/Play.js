@@ -257,7 +257,7 @@ class Play extends Phaser.Scene {
         this.player1_healthBar = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "emptyBar").setOrigin(0, 0.5).setDepth(3);
         this.player1_healthFill = this.add.image(borderPadding * 15, borderUISize + borderPadding * 2, "barRed").setOrigin(0, 0.5).setDepth(2);
 
-        //spaceships
+        //players
         this.player1 = new Player(this, this.p1Spawn.x, this.p1Spawn.y, 'cat1', Phaser.AUTO, 5, true).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
         this.player2 = new Player(this, this.p2Spawn.x, this.p2Spawn.y, 'cat2', Phaser.AUTO, 5, false).setScale(0.15).setOrigin(0.5, 0.5).setFrictionX(1);
 
@@ -703,6 +703,12 @@ class Play extends Phaser.Scene {
     }
 
 
+    loadVictoryScene(){
+        this.backgroundMusic.stop();
+        this.scene.start("victoryScene");
+    }
+
+
 
     updateHealthUI() {
         this.player1_healthFill.scaleX = 1 * (this.player1_health / this.player1_maxHealth);
@@ -802,11 +808,10 @@ class Play extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 1 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
-                    this.scene.start("menuScene");
+                this.cameras.main.fadeOut(800);
+                this.timedEventCombat = this.time.delayedCall(801, this.loadVictoryScene, [], this);
 
-                }
+                
 
 
             }
@@ -814,11 +819,8 @@ class Play extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 2 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
-                    this.scene.start("menuScene");
-
-                }
+                this.cameras.main.fadeOut(800);
+                this.timedEventCombat = this.time.delayedCall(801, this.loadVictoryScene, [], this);
 
 
             }

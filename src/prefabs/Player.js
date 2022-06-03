@@ -38,6 +38,38 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.totalUpgrade = 0;
 
         this.updateTransparency();
+
+        this.powerUpVfxManager = this.scene.add.particles('dust');
+
+        this.powerUpVfxEffect = this.powerUpVfxManager.createEmitter({
+            follow: this,
+            followOffset: {
+                   x: 0,
+                   y: 15
+                },
+            quantity: 15,
+            scale: {start: 0.7, end: 0.0},  // start big, end small
+            speed: {min: 100, max: 50}, // speed up
+            lifespan: 250,   // short lifespan
+            radial: true,
+            angle: { min: 180, max: 360 },  // { start, end, steps }
+            on: false   // do not immediately start, will trigger in collision
+        });
+
+        this.slidepowerUpVfxEffect = this.powerUpVfxManager.createEmitter({
+            follow: this,
+            followOffset: {
+                   x: 0,
+                   y: 0
+                },
+            quantity: 2,
+            scale: {start: 0.5, end: 0.0},  // start big, end small
+            speed: {min: 200, max: 50}, // speed up
+            lifespan: 200,   // short lifespan
+            radial: true,
+            angle: { min: 180, max: 360 },  // { start, end, steps }
+            on: false   // do not immediately start, will trigger in collision
+        });
     }
 
     doJump() {
@@ -56,6 +88,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             }
 
+            this.powerUpVfxEffect.explode();
+            
 
             this.isJumpFrame = true;
 
@@ -79,6 +113,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.anims.play('cat2_super_jump', false);
                 }
             }
+            
 
 
             this.isJumpFrame = true;
@@ -241,7 +276,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     updateTransparency(){
         if(this.totalUpgrade == 0){
-            this.alpha = 0.55;
+            this.alpha = 0.6;
         }
         if(this.totalUpgrade == 1){
             this.alpha = 0.7;
@@ -383,6 +418,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.currentJumpTime = 0;
                     this.jumpAmount++;
                     this.scene.sound.play('jump');
+                    this.powerUpVfxEffect.explode();
                 }
                 this.doJump();
 
@@ -405,6 +441,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }
 
                 this.anims.play('cat1_slide', false);
+
+                if(Phaser.Math.Difference(this.body.velocity.x,0) > 100 && this.isGrounded){
+                    this.slidepowerUpVfxEffect.explode();
+                }
 
 
             }
@@ -448,7 +488,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (!this.canSuperJump) {
                 if (this.scene.player2_hasUpgrade3) {
                     this.totalUpgrade+=1;
-                    this.canPunch = true;
+                    this.canSuperJump = true;
                     this.updateTransparency();
                 }
             }
@@ -483,17 +523,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if ((keyJ.isDown || keyL.isDown) && keyK.isDown) {
                 this.setAccelerationX(0);
                 this.setDragX(400);
+                
+                
             }
 
             if ((!keyJ.isDown && !keyL.isDown) && keyK.isDown) {
                 this.setAccelerationX(0);
                 this.setDragX(400);
+                
             }
 
             //console.log(this.isGrounded);
             if (keyI.isDown) {
                 if (this.body.onFloor()) {
                     this.jumpHeld = true;
+                    
                 }
 
                 if (this.jumpAmount < 1 && this.jumpHeld == false) {
@@ -501,6 +545,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     this.currentJumpTime = 0;
                     this.jumpAmount++;
                     this.scene.sound.play('jump');
+                    this.powerUpVfxEffect.explode();
                 }
                 this.doJump();
 
@@ -520,6 +565,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     }
                     this.setBodySize(200, 115, false);
 
+                }
+
+                if(Phaser.Math.Difference(this.body.velocity.x,0) > 100 && this.isGrounded){
+                    this.slidepowerUpVfxEffect.explode();
                 }
                 
                 this.anims.play('cat2_slide', false);

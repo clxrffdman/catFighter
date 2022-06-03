@@ -1,7 +1,7 @@
-class PlaySix extends Phaser.Scene {
+class Victory extends Phaser.Scene {
     hunger = 0;
     constructor() {
-        super("play6Scene");
+        super("victoryScene");
     }
 
 
@@ -26,6 +26,7 @@ class PlaySix extends Phaser.Scene {
         this.load.image('upgradeIcon1', './assets/toyfish.png');
         this.load.image('upgradeIcon2', './assets/toymouse.png');
         this.load.image('upgradeIcon3', './assets/catnip.png');
+        
 
         this.load.image('one', './assets/one.png');
         this.load.image('two', './assets/two.png');
@@ -34,6 +35,7 @@ class PlaySix extends Phaser.Scene {
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.audio('backgroundtrack', './assets/testsong.wav');
+        this.load.audio('victory', './assets/victory.mp3');
         this.load.audio('death', './assets/death.wav');
         this.load.audio('jump', './assets/cat_jump.mp3');
         this.load.audio('hurt', './assets/hurt.mp3');
@@ -51,7 +53,7 @@ class PlaySix extends Phaser.Scene {
             frameHeight: 16
         });
         this.load.image("testTileset", "./assets/colored_transparent_packed.png"); 
-        this.load.tilemapTiledJSON("platform_map6", "./assets/testLevel6.json");    // Tiled JSON file
+        this.load.tilemapTiledJSON("victory", "./assets/victory.json");    // Tiled JSON file
 
 
     }
@@ -62,7 +64,7 @@ class PlaySix extends Phaser.Scene {
     create() {
 
         // add a tilemap
-        this.map = this.add.tilemap("platform_map6");
+        this.map = this.add.tilemap("victory");
         // add a tileset to the map
         this.tileset = this.map.addTilesetImage("testTileset");
         // create tilemap layers
@@ -236,10 +238,10 @@ class PlaySix extends Phaser.Scene {
         this.physics.world.setFPS(60);
         this.staticGroup = this.physics.add.staticGroup();
         this.playerGroup = this.physics.add.group();
-        this.backgroundMusic = this.sound.add('backgroundtrack');
-        this.backgroundMusic.loop = true; // This is what you are looking for
-        this.backgroundMusic.setVolume(0.2);
-        this.backgroundMusic.play();
+        this.backgroundMusicVictory = this.sound.add('victory');
+        this.backgroundMusicVictory.loop = true; // This is what you are looking for
+        this.backgroundMusicVictory.setVolume(0.2);
+        this.backgroundMusicVictory.play();
         
 
         //UI
@@ -624,15 +626,26 @@ class PlaySix extends Phaser.Scene {
 
 
 
-        this.beginCombat = false;
-
-        this.timedEventCombat = this.time.delayedCall(2000, this.startFight, [], this);
-        this.timedEventthree = this.time.delayedCall(150, this.threeVisible, [], this);
-        this.timedEventtwo = this.time.delayedCall(767, this.twoVisible, [], this);
-        this.timedEventone = this.time.delayedCall(1384, this.oneVisible, [], this);
+        this.beginCombat = true;
         this.cameras.main.flash(100);
         this.cameras.main.fadeIn(150);
 
+        if (scoreP1 >= 5) {
+            this.add.text(game.config.width / 2, game.config.height / 3, 'GAME OVER - Player 1 wins!', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 3 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
+
+     
+
+
+        }
+        else if (scoreP2 >= 5) {
+            this.add.text(game.config.width / 2, game.config.height / 3, 'GAME OVER - Player 2 wins!', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 3 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
+
+  
+
+
+        }
 
         // this.player.anims.play('death', true);
         // console.log('anims', this.anims.anims.entries);
@@ -666,7 +679,7 @@ class PlaySix extends Phaser.Scene {
     }
 
     restartScene() {
-        this.backgroundMusic.stop();
+        this.backgroundMusicVictory.stop();
 
         this.loadIndex = Phaser.Math.Between(0,4);
         console.log(this.loadIndex);
@@ -715,7 +728,13 @@ class PlaySix extends Phaser.Scene {
 
         //console.log(this.hunger);
 
+        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.backgroundMusicVictory.stop();
+            this.scene.start("menuScene");
 
+        }
+
+        
 
         if (!this.gameOver) {
 
@@ -803,7 +822,7 @@ class PlaySix extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
                 if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
+                    this.backgroundMusicVictory.stop();
                     this.scene.start("menuScene");
 
                 }
@@ -815,7 +834,7 @@ class PlaySix extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
                 if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
+                    this.backgroundMusicVictory.stop();
                     this.scene.start("menuScene");
 
                 }
@@ -827,7 +846,7 @@ class PlaySix extends Phaser.Scene {
                 // this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to go to next Round or ← to Quit', scoreConfig).setOrigin(0.5);
 
                 if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
+                    this.backgroundMusicVictory.stop();
                     this.scene.start("menuScene");
 
                 }

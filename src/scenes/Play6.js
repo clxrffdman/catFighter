@@ -702,6 +702,11 @@ class PlaySix extends Phaser.Scene {
         this.one.visible = false;
     }
 
+    loadVictoryScene(){
+        this.backgroundMusic.stop();
+        this.scene.start("victoryScene");
+    }
+
 
 
     updateHealthUI() {
@@ -802,11 +807,10 @@ class PlaySix extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 1 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
-                    this.scene.start("menuScene");
+                this.cameras.main.fadeOut(800);
+                this.timedEventCombat = this.time.delayedCall(801, this.loadVictoryScene, [], this);
 
-                }
+                
 
 
             }
@@ -814,12 +818,9 @@ class PlaySix extends Phaser.Scene {
                 this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER - Player 2 wins!', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press ← to Menu', scoreConfig).setOrigin(0.5);
 
-                if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.backgroundMusic.stop();
-                    this.scene.start("menuScene");
-
-                }
-
+                
+                this.cameras.main.fadeOut(800);
+                this.timedEventCombat = this.time.delayedCall(801, this.loadVictoryScene, [], this);
 
             }
             else {

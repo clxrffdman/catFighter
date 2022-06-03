@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
     this.load.audio('sfx_explosion', './assets/explosion38.wav');
     this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
     this.load.image('menu', './assets/menu.png');
+    this.load.image('dust', './assets/dust.png');
   }
 
   create() {
@@ -29,6 +30,8 @@ class Menu extends Phaser.Scene {
     this.add.text(game.config.width / 4, game.config.height / 1.5, 'Press ↑ to start!', menuConfig).setOrigin(0.5).setDepth(1);
 
     this.add.text(game.config.width / 4, game.config.height / 1.3, 'Press ↓ for controls!', menuConfig).setOrigin(0.5).setDepth(1);
+
+    this.add.text(game.config.width / 4, game.config.height / 1.15, 'Press ← for credits!', menuConfig).setOrigin(0.5).setDepth(1);
 
     this.menubackdrop = this.add.sprite(150, 0, 'menu').setOrigin(0, 0).setScale(0.35);
 
@@ -55,7 +58,7 @@ class Menu extends Phaser.Scene {
         jumps: 2
       }
       this.sound.play('sfx_up');
-      this.scene.start("play3Scene");
+      this.scene.start("playScene");
     }
 
     if (Phaser.Input.Keyboard.JustDown(keyDOWN)) {
@@ -71,6 +74,21 @@ class Menu extends Phaser.Scene {
       }
       this.sound.play('sfx_down');
       this.scene.start("tutorialScene");
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+      game.settings = {
+        platformStartSpeed: 350,
+        spawnRange: [100, 350],
+        platformSizeRange: [50, 250],
+        playerGravity: 900,
+        jumpForce: 400,
+        playerStartPosition: 200,
+        maxHunger: 2000,
+        jumps: 2
+      }
+      this.sound.play('sfx_down');
+      this.scene.start("creditsScene");
     }
 
 
