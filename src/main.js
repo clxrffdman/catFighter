@@ -1,6 +1,6 @@
 // Calex Raffield, Michelle Huang, Isaiah Roberts
-// Game Title: Hungry Harold
-// Completed: 05/04/2022
+// Game Title: Fumbling Home
+// Completed: 06/03/2022
 // Creative Tilt: We took the traditional endless runner and kind of flipped it, with the player not being able to 
 // move in the X-axis and only being allowed to control jumping. Part of the programming behind it was managing 
 // the speed of the platforms, pickups, and modifying them based on the state of the player (is colliding, is in air, etc)
@@ -30,7 +30,7 @@ let config = {
     },
     resolution: 3,
     
-    scene: [ Menu, Play, Tutorial, PlayThree, PlayFour, PlayFive, PlaySix ]
+    scene: [ Menu, Play, Tutorial, PlayThree, PlayFour, PlayFive, PlaySix, Victory, Credits]
     
 }
 
